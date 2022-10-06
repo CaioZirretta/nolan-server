@@ -9,3 +9,34 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Room {
+  id        String    @id @default(uuid())
+  number    Int       @unique
+  sits      Json
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+  Session   Session[]
+}
+
+model Movie {
+  id                String    @id @default(uuid())
+  name              String
+  synopsis          String
+  synopsis_expanded String
+  banner            Bytes
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @default(now())
+  Session           Session[]
+}
+
+model Session {
+  id         String   @id @default(uuid())
+  room       Room     @relation(fields: [roomNumber], references: [number])
+  roomNumber Int      @unique
+  time       DateTime
+  movie      Movie    @relation(fields: [movieId], references: [id])
+  movieId    String   @unique
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now())
+}
