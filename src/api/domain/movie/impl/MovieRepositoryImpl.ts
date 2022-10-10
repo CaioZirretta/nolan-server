@@ -11,13 +11,24 @@ export class MovieRepositoryImpl implements MovieRepository {
 			where: { id },
 		});
 	}
-	async add(): Promise<any> {
+	async add({ id, name, synopsis, synopsis_expanded, banner, createdAt, updatedAt }: Movie): Promise<any> {
+		await prisma.movie.create({
+			data: {
+				id,
+				name,
+				synopsis,
+				synopsis_expanded,
+				banner,
+				createdAt,
+				updatedAt,
+			},
+		});
 		return;
 	}
-	async update(): Promise<any> {
+	async update(id: string): Promise<any> {
 		return;
 	}
-	async delete(): Promise<any> {
+	async delete(id: string): Promise<any> {
 		return;
 	}
 }
