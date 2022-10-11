@@ -1,3 +1,5 @@
-export const routes = (server: any) => {
-	
+import { movieRoutes } from './MovieRoutes';
+
+export const router = (server: any) => {
+	server.use(movieRoutes)
 }

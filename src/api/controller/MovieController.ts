@@ -1,22 +1,26 @@
-import { MovieServiceImpl } from './../domain/movie/impl/MovieServiceImpl';
+import { MovieRepository } from "./../domain/movie/MovieRepository";
+import { MovieService } from "./../domain/movie/MovieService";
+import { MovieServiceImpl } from "./../domain/movie/impl/MovieServiceImpl";
 import { Request, Response } from "express";
+import { MovieRepositoryImpl } from "../domain/movie/impl/MovieRepositoryImpl";
 
-movieService = new MovieServiceImpl();
+const repository: MovieRepository = new MovieRepositoryImpl();
+const service: MovieService = new MovieServiceImpl(repository);
+
 export class MovieController {
-
 	static async list(req: Request, res: Response) {
-		return movieService.list();
+		return service.list(req, res);
 	}
 	static async searchById(req: Request, res: Response) {
-		return movieService.;
+		return service.searchById(req, res);
 	}
 	static async add(req: Request, res: Response) {
-		return movieService.;
+		return service.add(req, res);
 	}
 	static async update(req: Request, res: Response) {
-		return movieService.;
+		return service.update(req, res);
 	}
 	static async delete(req: Request, res: Response) {
-		return movieService.;
+		return service.delete(req, res);
 	}
 }
