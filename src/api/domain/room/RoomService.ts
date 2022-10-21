@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-export interface MovieService {
+export interface RoomService {
 	list: (req: Request, res: Response) => Promise<any>;
 	searchById: (req: Request, res: Response) => Promise<any>;
 	add: (req: Request, res: Response) => Promise<any>;

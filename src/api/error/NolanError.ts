@@ -1,6 +1,8 @@
 export class NolanError extends Error {
-	constructor(message: string) {
+	code: string;
+	constructor(message: string, code: string) {
 		super();
 		this.message = message;
+		this.code = code;
 	}
 }
