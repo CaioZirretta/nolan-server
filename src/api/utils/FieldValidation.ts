@@ -60,7 +60,9 @@ const isString = (str: any) => {
 };
 
 const isArray = (array: any[]) => {
-	if (!array) return;
+	if (array.length === 0) {
+		throw new NolanError(ErrorMessage.PARAMETER_NULL, ErrorCode.NL_S_003);
+	}
 };
 
 const hasLength = (array: any[], target: number, min?: number) => {};

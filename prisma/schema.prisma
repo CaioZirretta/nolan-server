@@ -17,6 +17,8 @@ model Room {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now())
   Session   Session[]
+
+  @@map("rooms")
 }
 
 model Movie {
@@ -28,6 +30,8 @@ model Movie {
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @default(now())
   Session           Session[]
+
+  @@map("movies")
 }
 
 model Session {
@@ -39,6 +43,8 @@ model Session {
   movieId    String   @unique
   createdAt  DateTime @default(now())
   updatedAt  DateTime @default(now())
+
+  @@map("sessions")
 }
 
 model Sale {
@@ -47,6 +53,8 @@ model Sale {
   sessionId    String
   value        Float
   ticketAmount Int
+
+  @@map("sales")
 }
 
 model Reservation {
@@ -54,4 +62,6 @@ model Reservation {
   roomId  String
   movieId String
   seats   Json
+
+  @@map("reservations")
 }

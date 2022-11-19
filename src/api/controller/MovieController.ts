@@ -16,15 +16,19 @@ export class MovieController {
 		return service.searchById(req, res);
 	}
 	static async add(req: Request, res: Response) {
-		fieldValidation({
-			fields: [
-				{
-					value: req.params.id,
-					validation: "string",
-				},
-			],
-		});
-		return service.add(req, res);
+		try {
+			fieldValidation({
+				fields: [
+					{
+						value: req.params.id,
+						validation: "string",
+					},
+				],
+			});
+		} catch (err: any) {
+			return res.status(400).send({ error: err });
+		}
+		// return service.add(req, res);
 	}
 	static async update(req: Request, res: Response) {
 		return service.update(req, res);
