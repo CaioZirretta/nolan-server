@@ -1,11 +1,11 @@
-import { FieldValidation } from './../../../utils/FieldValidation';
+import { fieldValidation } from './../../../utils/FieldValidation';
 import { MovieRepository } from "./../MovieRepository";
 import { Request, Response } from "express";
 import { MovieService } from "../MovieService";
 import { Movie } from "@prisma/client";
 
 export class MovieServiceImpl implements MovieService {
-	constructor(private repository: MovieRepository, private FieldValidation: FieldValidation) {}
+	constructor(private repository: MovieRepository) {}
 
 	async list(req: Request, res: Response): Promise<any> {
 		let result: Movie[];
@@ -23,7 +23,6 @@ export class MovieServiceImpl implements MovieService {
 		let result: Movie;
 
 		try {
-			FieldValidation.string(req.params.id);
 			result = await this.repository.searchById(req.params.id);
 		} catch (err: any) {
 			return res.status(400).send({ error: err });

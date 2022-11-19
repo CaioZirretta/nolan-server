@@ -1,3 +1,4 @@
+import { fieldValidation } from "./../utils/FieldValidation";
 import { MovieRepository } from "./../domain/movie/MovieRepository";
 import { MovieService } from "./../domain/movie/MovieService";
 import { MovieServiceImpl } from "./../domain/movie/impl/MovieServiceImpl";
@@ -15,6 +16,14 @@ export class MovieController {
 		return service.searchById(req, res);
 	}
 	static async add(req: Request, res: Response) {
+		fieldValidation({
+			fields: [
+				{
+					value: req.params.id,
+					validation: "string",
+				},
+			],
+		});
 		return service.add(req, res);
 	}
 	static async update(req: Request, res: Response) {

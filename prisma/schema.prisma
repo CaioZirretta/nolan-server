@@ -40,3 +40,18 @@ model Session {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @default(now())
 }
+
+model Sale {
+  id           String @id @default(uuid())
+  movieId      String
+  sessionId    String
+  value        Float
+  ticketAmount Int
+}
+
+model Reservation {
+  id      String @id @default(uuid())
+  roomId  String
+  movieId String
+  seats   Json
+}
