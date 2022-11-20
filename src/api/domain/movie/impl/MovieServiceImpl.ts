@@ -1,4 +1,3 @@
-import { fieldValidation } from './../../../utils/FieldValidation';
 import { MovieRepository } from "./../MovieRepository";
 import { Request, Response } from "express";
 import { MovieService } from "../MovieService";
