@@ -1,7 +1,6 @@
-import { fieldValidation } from "./../utils/FieldValidation";
-import { MovieRepository } from "./../domain/movie/MovieRepository";
-import { MovieService } from "./../domain/movie/MovieService";
-import { MovieServiceImpl } from "./../domain/movie/impl/MovieServiceImpl";
+import { MovieRepository } from "../domain/movie/MovieRepository";
+import { MovieService } from "../domain/movie/MovieService";
+import { MovieServiceImpl } from "../domain/movie/impl/MovieServiceImpl";
 import { Request, Response } from "express";
 import { MovieRepositoryImpl } from "../domain/movie/impl/MovieRepositoryImpl";
 
@@ -17,14 +16,6 @@ export class MovieController {
 	}
 	static async add(req: Request, res: Response) {
 		try {
-			fieldValidation({
-				fields: [
-					{
-						value: req.params.id,
-						validation: "string",
-					},
-				],
-			});
 		} catch (err: any) {
 			return res.status(400).send({ error: err });
 		}
