@@ -1,66 +1,66 @@
-import { ErrorCode } from "./../../../error/ErrorCode";
-import { ErrorMessage } from "./../../../error/ErrorMessage";
-import { NolanError } from "../../../error/NolanError";
-import { Movie } from "@prisma/client";
 import { prisma } from "../../../../prisma";
+import { Movie } from "@prisma/client";
 import { MovieRepository } from "../MovieRepository";
+import { NolanError } from "../../../error/NolanError";
+import { ErrorMessage } from "../../../error/ErrorMessage";
+import { CreateMovieType, UpdateMovieType } from "../MovieSchema";
 
 export class MovieRepositoryImpl implements MovieRepository {
-	async list(): Promise<Movie[]> {
-		const result: Movie[] = await prisma.movie.findMany();
+    async list(): Promise<Movie[]> {
+        const result: Movie[] = await prisma.movie.findMany();
 
-		if (result.length === 0) throw new NolanError(ErrorMessage.MOVIES_NOT_FOUND, ErrorCode.NL_S_001);
+        if (result.length === 0) {
+            throw new NolanError(ErrorMessage.MOVIES_NOT_FOUND);
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	async searchById(id: string): Promise<Movie> {
-		const result = await prisma.movie.findUnique({
-			where: { id },
-		});
+    async searchById(id: string): Promise<Movie> {
+        const result: Movie | null = await prisma.movie.findUnique({
+            where: { id },
+        });
 
-		return result ?? ({} as Movie);
-	}
+        if (!result) throw new NolanError(ErrorMessage.MOVIE_NOT_FOUND);
 
-	async add({ id, name, synopsis, synopsis_expanded, banner, createdAt, updatedAt }: Movie): Promise<any> {
-		const result = await prisma.movie.create({
-			data: {
-				id,
-				name,
-				synopsis,
-				synopsis_expanded,
-				banner,
-				createdAt,
-				updatedAt,
-			},
-		});
-		return result;
-	}
+        return result;
+    }
 
-	async update({ id, name, synopsis, synopsis_expanded, banner, createdAt, updatedAt }: Movie): Promise<any> {
-		const result = await prisma.movie.update({
-			where: {
-				id,
-			},
-			data: {
-				id,
-				name,
-				synopsis,
-				synopsis_expanded,
-				banner,
-				createdAt,
-				updatedAt,
-			},
-		});
-		return result;
-	}
+    async create({ name, synopsis, synopsis_expanded, banner }: CreateMovieType): Promise<Movie> {
+        return prisma.movie.create({
+            data: {
+                name,
+                synopsis,
+                synopsis_expanded,
+                banner,
+            },
+        });
+    }
 
-	async delete(id: string): Promise<any> {
-		const result = await prisma.movie.delete({
-			where: {
-				id,
-			},
-		});
-		return result;
-	}
+    async update({ id, name, synopsis, synopsis_expanded, banner }: UpdateMovieType): Promise<Movie> {
+        return prisma.movie.update({
+            where: {
+                id,
+            },
+            data: {
+                name,
+                synopsis,
+                synopsis_expanded,
+                banner,
+                updatedAt: new Date(),
+            },
+        });
+    }
+
+    async delete(id: string): Promise<Movie> {
+        const result: Movie = await prisma.movie.delete({
+            where: {
+                id,
+            },
+        });
+
+        if (!result) throw new NolanError(ErrorMessage.MOVIE_NOT_FOUND);
+
+        return result;
+    }
 }
