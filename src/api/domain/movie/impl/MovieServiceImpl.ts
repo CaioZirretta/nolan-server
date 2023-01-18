@@ -4,8 +4,7 @@ import { MovieService } from "../MovieService";
 import { Movie } from "@prisma/client";
 
 export class MovieServiceImpl implements MovieService {
-    constructor(private repository: MovieRepository) {
-    }
+    constructor(private repository: MovieRepository) {}
 
     async list(req: Request, res: Response): Promise<Response> {
         let result: Movie[];

@@ -1,9 +1,10 @@
 import { Room } from "@prisma/client";
+import { ItemRepository } from "../ItemRepository";
 
-export interface RoomRepository {
+export interface RoomRepository extends ItemRepository<Room> {
 	list: () => Promise<Room[]>;
 	searchById: (id: string) => Promise<Room>;
-	add: (movie: Room) => Promise<any>;
-	update: (movie: Room) => Promise<any>;
-	delete: (id: string) => Promise<any>;
+	create: (room: Room) => Promise<Room>;
+	update: (room: Room) => Promise<Room>;
+	delete: (id: string) => Promise<Room>;
 }
