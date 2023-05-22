@@ -1,6 +1,6 @@
 import { Room } from "@prisma/client";
 
-export interface ItemRepository<T> {
+export interface BaseCrudRepository<T> {
     list: () => Promise<T[]>;
     searchById: (id: string) => Promise<T>;
     create: (item: any) => Promise<T>;

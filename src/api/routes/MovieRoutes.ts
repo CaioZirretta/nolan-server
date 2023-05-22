@@ -1,12 +1,13 @@
-import { MovieController } from '../controller/MovieController';
+import { MovieResource } from '../resources/MovieResource';
 import { Router } from "express";
+import { authenticationFilter } from "../infra/AuthenticationFilter";
 
 export const movieRoutes = Router();
 
 const baseUrl = "/movie";
 
-movieRoutes.get(baseUrl, MovieController.list);
-movieRoutes.get(baseUrl + "/:id", MovieController.searchById);
-movieRoutes.post(baseUrl, MovieController.create);
-movieRoutes.patch(baseUrl + "/:id", MovieController.update);
-movieRoutes.delete(baseUrl + "/:id", MovieController.delete);
+movieRoutes.get(baseUrl,authenticationFilter, MovieResource.list);
+movieRoutes.get(baseUrl + "/:id",authenticationFilter, MovieResource.searchById);
+movieRoutes.post(baseUrl, MovieResource.create);
+movieRoutes.patch(baseUrl + "/:id",authenticationFilter, MovieResource.update);
+movieRoutes.delete(baseUrl + "/:id",authenticationFilter, MovieResource.delete);

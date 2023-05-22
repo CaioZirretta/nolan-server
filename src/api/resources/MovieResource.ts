@@ -8,7 +8,7 @@ import { CreateMovieSchema, FindMovieSchema, UpdateMovieSchema } from "../domain
 const repository: MovieRepository = new MovieRepositoryImpl();
 const service: MovieService = new MovieServiceImpl(repository);
 
-export class MovieController {
+export class MovieResource {
     static async list(req: Request, res: Response) {
         return service.list(req, res);
     }
