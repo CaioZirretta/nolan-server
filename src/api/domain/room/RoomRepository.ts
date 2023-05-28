@@ -1,5 +1,5 @@
 import { Room } from "@prisma/client";
-import { BaseCrudRepository } from "../BaseCrudRepository";
+import { BaseCrudRepository } from "../../infra/BaseCrudRepository";
 
 export interface RoomRepository extends BaseCrudRepository<Room> {
 	list: () => Promise<Room[]>;

@@ -1,11 +1,10 @@
-import { prisma } from "../../../../prisma";
+import { prisma } from "../../../prisma";
 import { Movie } from "@prisma/client";
-import { MovieRepository } from "../MovieRepository";
-import { NolanError } from "../../../error/NolanError";
-import { ErrorMessage } from "../../../error/ErrorMessage";
-import { CreateMovieType, UpdateMovieType } from "../MovieSchema";
+import { NolanError } from "../../error/NolanError";
+import { ErrorMessage } from "../../error/ErrorMessage";
+import { CreateMovieType, UpdateMovieType } from "../../domain/movie/MovieSchema";
 
-export class MovieRepositoryImpl implements MovieRepository {
+export class MovieRepository {
     async list(): Promise<Movie[]> {
         const result: Movie[] = await prisma.movie.findMany();
 

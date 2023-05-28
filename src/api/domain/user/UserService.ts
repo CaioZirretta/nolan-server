@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { LoginRequest, LoginResponse } from "./LoginSchema";
-import { UserRepository } from "./UserRepository";
-import { NolanError } from "../../error/NolanError";
+import { UserRepository } from "../../infra/user/UserRepository";
 
 export class UserService {
     constructor(private repository: UserRepository) {
@@ -21,9 +20,9 @@ export class UserService {
     }
 
     async create(req: Request, res: Response): Promise<Response> {
-        const { user, password, createdAt } = req.body;
+        const { username, password, createdAt } = req.body;
         try{
-            await this.repository.create({ user, password, createdAt });
+            await this.repository.create({ username, password, createdAt });
         } catch (err: any){
             return res.status(400).send({ error: err })
         }

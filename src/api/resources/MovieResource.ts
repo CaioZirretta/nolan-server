@@ -1,12 +1,10 @@
-import { MovieRepository } from "../domain/movie/MovieRepository";
+import { MovieRepository } from "../infra/movie/MovieRepository";
 import { MovieService } from "../domain/movie/MovieService";
-import { MovieServiceImpl } from "../domain/movie/impl/MovieServiceImpl";
 import { Request, Response } from "express";
-import { MovieRepositoryImpl } from "../domain/movie/impl/MovieRepositoryImpl";
 import { CreateMovieSchema, FindMovieSchema, UpdateMovieSchema } from "../domain/movie/MovieSchema";
 
-const repository: MovieRepository = new MovieRepositoryImpl();
-const service: MovieService = new MovieServiceImpl(repository);
+const repository: MovieRepository = new MovieRepository();
+const service: MovieService = new MovieService(repository);
 
 export class MovieResource {
     static async list(req: Request, res: Response) {

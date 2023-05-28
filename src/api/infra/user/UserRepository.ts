@@ -1,10 +1,11 @@
-import { LoginRequest, LoginResponse } from "./LoginSchema";
+import { LoginRequest, LoginResponse } from "../../domain/user/LoginSchema";
 import { prisma } from "../../../prisma";
 import { NolanError } from "../../error/NolanError";
 import { User } from "@prisma/client";
 import bcrypt from 'bcrypt';
-import { createToken } from "../../infra/JwtToken";
-import { UserSchema } from "./UserSchema";
+import { createToken } from "../JwtToken";
+import { CreateUserType } from "../../domain/user/UserSchema";
+import { ErrorMessage } from "../../error/ErrorMessage";
 
 
 export class UserRepository {
@@ -17,7 +18,7 @@ export class UserRepository {
             const passwordMatch: boolean = await bcrypt.compare(loginInfo.password, result.password);
 
             if (!passwordMatch) {
-                throw new NolanError("Password incorrect");
+                throw new NolanError(ErrorMessage.PASSWORD_INCORRECT);
             }
 
             const token: string = createToken({
@@ -39,19 +40,19 @@ export class UserRepository {
             }
         });
 
-        if (!result) throw new NolanError("User not found");
+        if (!result) throw new NolanError(ErrorMessage.USER_NOT_FOUND);
 
         return result;
     }
 
-    async create(user: UserSchema): Promise<void> {
+    async create(user: CreateUserType): Promise<void> {
         const result: User | null = await prisma.user.findFirst({
             where: {
-                user: user.user,
+                user: user.username,
             }
         });
 
-        if (result) throw new NolanError("User already registered");
+        if (result) throw new NolanError(ErrorMessage.USER_ALREADY_REGISTERED);
 
         const saltRounds: number = 10;
         const salt = await bcrypt.genSalt(saltRounds);
@@ -60,7 +61,7 @@ export class UserRepository {
 
         await prisma.user.create({
             data: {
-                user: user.user,
+                user: user.username,
                 password: hashPassword,
                 createdAt: user.createdAt,
             }
