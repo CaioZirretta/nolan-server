@@ -13,7 +13,7 @@ export class UserService {
         try {
             result = await this.repository.login({ username, password });
         } catch (error: any) {
-            return res.status(404).send({ error: error });
+            return res.status(404).send({ message: error });
         }
 
         return res.status(200).send(result);
@@ -24,7 +24,7 @@ export class UserService {
         try{
             await this.repository.create({ username, password, createdAt });
         } catch (err: any){
-            return res.status(400).send({ error: err })
+            return res.status(400).send({ message: err })
         }
 
         return res.status(200).send();

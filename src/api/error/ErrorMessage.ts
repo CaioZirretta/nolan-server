@@ -11,5 +11,6 @@ export enum ErrorMessage {
 	USER_ALREADY_REGISTERED = "User already registered",					// 10
     NOT_AUTHENTICATED = "Subject not authenticated",						// 11
     MISSING_AUTH = "Authentication not found",								// 12
-	DATE_ISO_REQUIRED = "Date must be in ISO format" 						// 13,
+	DATE_ISO_REQUIRED = "Date must be in ISO format", 						// 13,
+	MOVIE_NAME_TOO_LARGE = "Movie name must be of a maximum length of 36"	// 14
 }

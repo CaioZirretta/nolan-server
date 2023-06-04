@@ -17,7 +17,7 @@ const corsOptions = {
     optionsSuccessStatus: 200
 };
 
-server.use(express.json());
+server.use(express.json({ limit: '2mb' }));
 server.use(cors(corsOptions));
 
 router(server);

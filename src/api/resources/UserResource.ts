@@ -13,7 +13,7 @@ export class UserResource {
         try {
             LoginRequestSchema.parse(req.body);
         } catch (err: any) {
-            return res.status(400).send({ error: err });
+            return res.status(400).send({ message: err });
         }
 
         return service.login(req, res);
@@ -23,7 +23,7 @@ export class UserResource {
         try {
             CreateUserSchema.parse(req.body);
         } catch (err: any) {
-            return res.status(400).send({ error: err });
+            return res.status(400).send({ message: err });
         }
         return service.create(req, res);
     }

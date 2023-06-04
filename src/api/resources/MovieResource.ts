@@ -14,8 +14,8 @@ export class MovieResource {
     static async searchById(req: Request, res: Response) {
         try {
             FindMovieSchema.parse({ id: req.params.id });
-        } catch (err) {
-            return res.status(400).send({ error: err });
+        } catch (error) {
+            return res.status(400).send({ message: error });
         }
         return service.searchById(req, res);
     }
@@ -23,8 +23,8 @@ export class MovieResource {
     static async create(req: Request, res: Response) {
         try {
             CreateMovieSchema.parse(req.body);
-        } catch (err: any) {
-            return res.status(400).send({ error: err.issues });
+        } catch (error: any) {
+            return res.status(400).send({ message: error.issues });
         }
         return service.create(req, res);
     }
@@ -32,8 +32,8 @@ export class MovieResource {
     static async update(req: Request, res: Response) {
         try {
             UpdateMovieSchema.parse(req.body);
-        } catch (err: any) {
-            return res.status(400).send({ error: err.issues });
+        } catch (error: any) {
+            return res.status(400).send({ message: error.issues });
         }
 
         return service.update(req, res);
