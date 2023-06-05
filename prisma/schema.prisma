@@ -22,7 +22,6 @@ model User {
 model Room {
   id        String    @id @default(uuid())
   number    Int       @unique
-  sits      Json
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now())
   Session   Session[]
@@ -47,6 +46,7 @@ model Session {
   id         String   @id @default(uuid())
   room       Room     @relation(fields: [roomNumber], references: [number])
   roomNumber Int      @unique
+  sits       String[]
   time       DateTime
   movie      Movie    @relation(fields: [movieId], references: [id])
   movieId    String   @unique

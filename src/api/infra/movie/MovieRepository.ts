@@ -3,8 +3,9 @@ import { Movie } from "@prisma/client";
 import { NolanError } from "../../error/NolanError";
 import { ErrorMessage } from "../../error/ErrorMessage";
 import { CreateMovieType, UpdateMovieType } from "../../domain/movie/MovieSchema";
+import { BaseCrudRepository } from "../BaseCrudRepository";
 
-export class MovieRepository {
+export class MovieRepository implements BaseCrudRepository<Movie>{
     async list(): Promise<Movie[]> {
         const result: Movie[] = await prisma.movie.findMany();
 
@@ -20,7 +21,9 @@ export class MovieRepository {
             where: { id },
         });
 
-        if (!result) throw new NolanError(ErrorMessage.MOVIE_NOT_FOUND);
+        if (!result) {
+            throw new NolanError(ErrorMessage.MOVIE_NOT_FOUND);
+        }
 
         return result;
     }
@@ -58,7 +61,9 @@ export class MovieRepository {
             },
         });
 
-        if (!result) throw new NolanError(ErrorMessage.MOVIE_NOT_FOUND);
+        if (!result) {
+            throw new NolanError(ErrorMessage.MOVIE_NOT_FOUND);
+        }
 
         return result;
     }
