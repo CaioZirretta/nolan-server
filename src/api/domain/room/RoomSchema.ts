@@ -7,18 +7,20 @@ export const FindRoomSchema = z.object({
 export type FindRoomType = z.infer<typeof FindRoomSchema>
 
 export const CreateRoomSchema = z.object({
-    number: z.number().min(1),
+    number: z.number(),
 });
 
 export type CreateRoomType = z.infer<typeof CreateRoomSchema>
 
 export const UpdateRoomSchema = z.object({
-    number: z.number().min(1),
+    id: z.string(),
+    number: z.number(),
 });
 
-export type UpdateRoomType = {
-    id: string,
-    number: number,
-}
+export type UpdateRoomType = z.infer<typeof UpdateRoomSchema>
+
+export const DeleteRoomSchema = z.object({ id: z.string() });
+
+export type DeleteRoomType = z.infer<typeof DeleteRoomSchema>
 
 

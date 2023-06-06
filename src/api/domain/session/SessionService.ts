@@ -1,14 +1,12 @@
-import { MovieRepository } from "../../infra/movie/MovieRepository";
+import { SessionRepository } from "../../infra/session/SessionRepository";
 import { Request, Response } from "express";
-import { Movie } from "@prisma/client";
-import { ErrorMessage } from "../../error/ErrorMessage";
+import { Session } from "@prisma/client";
 
-export class MovieService {
-    constructor(private repository: MovieRepository) {
-    }
+export class SessionService {
+    constructor(private repository: SessionRepository){}
 
     async list(req: Request, res: Response): Promise<Response> {
-        let result: Movie[];
+        let result: Session[];
 
         try {
             result = await this.repository.list();
@@ -20,7 +18,7 @@ export class MovieService {
     }
 
     async searchById(req: Request, res: Response): Promise<Response> {
-        let result: Movie;
+        let result: Session;
 
         try {
             result = await this.repository.searchById(req.params.id);
@@ -31,17 +29,29 @@ export class MovieService {
         return res.status(200).send(result);
     }
 
-    async create(req: Request, res: Response): Promise<Response> {
-        const { name, synopsis, synopsis_expanded, banner } = req.body;
+    async searchByRoom(req: Request, res: Response): Promise<Response> {
+        let result: Session[];
 
-        let result: Movie;
+        try {
+            result = await this.repository.searchByRoom(req.body);
+        } catch (error: any) {
+            return res.status(400).send({ error });
+        }
+
+        return res.status(200).send(result);
+    }
+
+    async create(req: Request, res: Response): Promise<Response> {
+        const { roomNumber, sits, time, movieId } = req.body;
+
+        let result: Session;
 
         try {
             result = await this.repository.create({
-                name,
-                synopsis,
-                synopsis_expanded,
-                banner,
+                roomNumber,
+                sits,
+                time,
+                movieId
             });
         } catch (error: any) {
             return res.status(400).send({ error });
@@ -51,17 +61,17 @@ export class MovieService {
     }
 
     async update(req: Request, res: Response): Promise<Response> {
-        const { id, name, synopsis, synopsis_expanded, banner } = req.body;
+        const { id, roomNumber, sits, time, movieId } = req.body;
 
-        let result: Movie;
+        let result: Session;
 
         try {
             result = await this.repository.update({
                 id,
-                name,
-                synopsis,
-                synopsis_expanded,
-                banner,
+                roomNumber,
+                sits,
+                time,
+                movieId
             });
         } catch (error: any) {
             return res.status(400).send({ error });
@@ -71,7 +81,7 @@ export class MovieService {
     }
 
     async delete(req: Request, res: Response): Promise<Response> {
-        let result: Movie;
+        let result: Session;
 
         try {
             result = await this.repository.delete(req.params.id);

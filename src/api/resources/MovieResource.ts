@@ -1,7 +1,7 @@
 import { MovieRepository } from "../infra/movie/MovieRepository";
 import { MovieService } from "../domain/movie/MovieService";
 import { Request, Response } from "express";
-import { CreateMovieSchema, FindMovieSchema, UpdateMovieSchema } from "../domain/movie/MovieSchema";
+import { CreateMovieSchema, DeleteMovieSchema, FindMovieSchema, UpdateMovieSchema } from "../domain/movie/MovieSchema";
 
 const repository: MovieRepository = new MovieRepository();
 const service: MovieService = new MovieService(repository);
@@ -24,7 +24,7 @@ export class MovieResource {
         try {
             CreateMovieSchema.parse(req.body);
         } catch (error: any) {
-            return res.status(400).send({ message: error.issues });
+            return res.status(400).send({ message: error });
         }
         return service.create(req, res);
     }
@@ -33,13 +33,18 @@ export class MovieResource {
         try {
             UpdateMovieSchema.parse(req.body);
         } catch (error: any) {
-            return res.status(400).send({ message: error.issues });
+            return res.status(400).send({ message: error });
         }
 
         return service.update(req, res);
     }
 
     static async delete(req: Request, res: Response) {
+        try {
+            DeleteMovieSchema.parse({ id: req.params.id });
+        } catch (error: any) {
+            return res.status(400).send({ message: error });
+        }
         return service.delete(req, res);
     }
 }

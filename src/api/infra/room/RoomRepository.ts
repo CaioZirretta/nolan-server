@@ -26,15 +26,45 @@ export class RoomRepository implements BaseCrudRepository<Room> {
         return result;
     }
 
-    async create({ number }: CreateRoomType): Promise<Room> {
-        return prisma.room.create({ data: { number } });
+    async searchByNumber(number: number): Promise<Room> {
+        const result: Room | null = await prisma.room.findUnique({ where: { number } });
+
+        if (!result) {
+            throw new NolanError(ErrorMessage.ROOM_NOT_FOUND);
+        }
+
+        return result;
+    }
+
+    async create(number: number): Promise<Room> {
+        const result: Room | null = await prisma.room.findUnique({ where: { number } });
+
+        if(result){
+            throw new NolanError(ErrorMessage.ROOM_ALREADY_EXISTS);
+        }
+        return prisma.room.create({
+            data: {
+                number,
+                updatedAt: new Date(),
+                createdAt: new Date()
+            }
+        });
     }
 
     async update({ id, number }: UpdateRoomType): Promise<Room> {
-        return prisma.room.update({
+        const result: Room | null =  await prisma.room.update({
             where: { id },
-            data: { number }
+            data: {
+                number,
+                updatedAt: new Date()
+            },
         });
+
+        if(!result){
+            throw new NolanError(ErrorMessage.ROOM_NOT_FOUND);
+        }
+
+        return result;
     }
 
     async delete(id: string): Promise<Room> {

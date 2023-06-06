@@ -5,7 +5,7 @@ import { ErrorMessage } from "../../error/ErrorMessage";
 import { CreateMovieType, UpdateMovieType } from "../../domain/movie/MovieSchema";
 import { BaseCrudRepository } from "../BaseCrudRepository";
 
-export class MovieRepository implements BaseCrudRepository<Movie>{
+export class MovieRepository implements BaseCrudRepository<Movie> {
     async list(): Promise<Movie[]> {
         const result: Movie[] = await prisma.movie.findMany();
 
@@ -17,9 +17,7 @@ export class MovieRepository implements BaseCrudRepository<Movie>{
     }
 
     async searchById(id: string): Promise<Movie> {
-        const result: Movie | null = await prisma.movie.findUnique({
-            where: { id },
-        });
+        const result: Movie | null = await prisma.movie.findUnique({ where: { id } });
 
         if (!result) {
             throw new NolanError(ErrorMessage.MOVIE_NOT_FOUND);
@@ -35,12 +33,14 @@ export class MovieRepository implements BaseCrudRepository<Movie>{
                 synopsis,
                 synopsis_expanded,
                 banner,
+                createdAt: new Date(),
+                updatedAt: new Date()
             },
         });
     }
 
     async update({ id, name, synopsis, synopsis_expanded, banner }: UpdateMovieType): Promise<Movie> {
-        return prisma.movie.update({
+        const result: Movie = await prisma.movie.update({
             where: {
                 id,
             },
@@ -52,14 +52,16 @@ export class MovieRepository implements BaseCrudRepository<Movie>{
                 updatedAt: new Date(),
             },
         });
+
+        if (!result) {
+            throw new NolanError(ErrorMessage.MOVIE_NOT_FOUND);
+        }
+
+        return result;
     }
 
     async delete(id: string): Promise<Movie> {
-        const result: Movie = await prisma.movie.delete({
-            where: {
-                id,
-            },
-        });
+        const result: Movie = await prisma.movie.delete({ where: { id } });
 
         if (!result) {
             throw new NolanError(ErrorMessage.MOVIE_NOT_FOUND);

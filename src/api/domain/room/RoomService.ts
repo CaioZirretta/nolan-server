@@ -12,7 +12,7 @@ export class RoomService {
         try {
             result = await this.repository.list();
         } catch (error: any) {
-            return res.status(400).send({ message: error });
+            return res.status(400).send({ error });
         }
 
         return res.status(200).send(result);
@@ -24,7 +24,7 @@ export class RoomService {
         try {
             result = await this.repository.searchById(req.params.id);
         } catch (error: any) {
-            return res.status(400).send({ message: error });
+            return res.status(400).send({ error });
         }
 
         return res.status(200).send(result);
@@ -36,9 +36,9 @@ export class RoomService {
         let result: Room;
 
         try {
-            result = await this.repository.searchById(req.params.id);
+            result = await this.repository.create(number);
         } catch (error: any) {
-            return res.status(400).send({ message: error.message });
+            return res.status(400).send({ error });
         }
 
         return res.status(200).send(result);
@@ -55,15 +55,21 @@ export class RoomService {
                 number,
             });
         } catch (error: any) {
-            return res.status(400).send({ message: error.message });
+            return res.status(400).send({ error });
         }
 
         return res.status(200).send(result);
     }
 
     async delete(req: Request, res: Response): Promise<Response> {
-        return Promise.resolve(undefined);
+        let result: Room;
+
+        try {
+            result = await this.repository.delete(req.params.id);
+        } catch (error: any) {
+            return res.status(400).send({ error });
+        }
+
+        return res.status(200).send(result);
     }
-
-
 }

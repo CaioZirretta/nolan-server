@@ -18,18 +18,15 @@ export const CreateMovieSchema = z.object({
 export type CreateMovieType = z.infer<typeof CreateMovieSchema>
 
 export const UpdateMovieSchema = z.object({
+    id: z.string(),
     name: z.string().max(36),
     synopsis: z.string(),
     synopsis_expanded: z.string(),
     banner: z.string(),
 });
 
-// O id serve para procurar o filme e depois alterá-lo
-export type UpdateMovieType = {
-    id: string,
-    name: string
-    synopsis: string
-    synopsis_expanded: string
-    banner: string
-};
+export type UpdateMovieType = z.infer<typeof UpdateMovieSchema>;
 
+export const DeleteMovieSchema = z.object({ id: z.string() });
+
+export type DeleteMovieType = z.infer<typeof DeleteMovieSchema>
