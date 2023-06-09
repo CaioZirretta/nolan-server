@@ -33,8 +33,6 @@ export class MovieRepository implements BaseCrudRepository<Movie> {
                 synopsis,
                 synopsis_expanded,
                 banner,
-                createdAt: new Date(),
-                updatedAt: new Date()
             },
         });
     }

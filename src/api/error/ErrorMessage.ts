@@ -7,6 +7,7 @@ export enum ErrorMessage {
     SESSIONS_NOT_FOUND = "No sessions were found",
     SESSION_NOT_FOUND = "Session not found",
     SESSION_BY_ROOM_NOT_FOUND = "No sessions were found by given room",
+    SESSION_IN_GIVEN_TIME_ALREADY_EXISTS = 'Session in given time already exists',
     PARAMETER_NULL = "Parameter has a null value",
     PARAMETER_INVALID = "Parameter has a invalid type",
     PARAMETER_ARRAY_SHORT = "Parameter has not a minimum required length",

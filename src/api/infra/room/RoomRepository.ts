@@ -1,9 +1,9 @@
-import { Movie, Room } from "@prisma/client";
+import { Room } from "@prisma/client";
 import { BaseCrudRepository } from "../BaseCrudRepository";
 import { prisma } from "../../../prisma";
 import { NolanError } from "../../error/NolanError";
 import { ErrorMessage } from "../../error/ErrorMessage";
-import { CreateRoomType, UpdateRoomType } from "../../domain/room/RoomSchema";
+import { UpdateRoomType } from "../../domain/room/RoomSchema";
 
 export class RoomRepository implements BaseCrudRepository<Room> {
     async list(): Promise<Room[]> {
@@ -39,20 +39,18 @@ export class RoomRepository implements BaseCrudRepository<Room> {
     async create(number: number): Promise<Room> {
         const result: Room | null = await prisma.room.findUnique({ where: { number } });
 
-        if(result){
+        if (result) {
             throw new NolanError(ErrorMessage.ROOM_ALREADY_EXISTS);
         }
         return prisma.room.create({
             data: {
                 number,
-                updatedAt: new Date(),
-                createdAt: new Date()
             }
         });
     }
 
     async update({ id, number }: UpdateRoomType): Promise<Room> {
-        const result: Room | null =  await prisma.room.update({
+        const result: Room | null = await prisma.room.update({
             where: { id },
             data: {
                 number,
@@ -60,7 +58,7 @@ export class RoomRepository implements BaseCrudRepository<Room> {
             },
         });
 
-        if(!result){
+        if (!result) {
             throw new NolanError(ErrorMessage.ROOM_NOT_FOUND);
         }
 

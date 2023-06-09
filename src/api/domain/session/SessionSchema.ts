@@ -15,7 +15,7 @@ export type FindSessionByRoom = z.infer<typeof FindSessionByRoomSchema>
 export const CreateSessionSchema = z.object({
     roomNumber: z.number(),
     sits: z.string().array(),
-    time: z.coerce.date().min(new Date(new Date().getTime() - (60 * 60 * 1000))),
+    time: z.coerce.date().min(new Date(new Date().getTime() - (30000))),
     movieId: z.string(),
 });
 

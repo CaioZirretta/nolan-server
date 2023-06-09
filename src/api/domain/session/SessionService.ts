@@ -1,9 +1,12 @@
 import { SessionRepository } from "../../infra/session/SessionRepository";
 import { Request, Response } from "express";
 import { Session } from "@prisma/client";
+import { CreateSessionType } from "./SessionSchema";
+import { onlyHourNonZero } from "../../utils/DateUtils";
 
 export class SessionService {
-    constructor(private repository: SessionRepository){}
+    constructor(private repository: SessionRepository) {
+    }
 
     async list(req: Request, res: Response): Promise<Response> {
         let result: Session[];
@@ -50,7 +53,7 @@ export class SessionService {
             result = await this.repository.create({
                 roomNumber,
                 sits,
-                time,
+                time: onlyHourNonZero(time),
                 movieId
             });
         } catch (error: any) {

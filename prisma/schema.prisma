@@ -45,15 +45,23 @@ model Movie {
 model Session {
   id         String   @id @default(uuid())
   room       Room     @relation(fields: [roomNumber], references: [number])
-  roomNumber Int      @unique
+  roomNumber Int
   sits       String[]
   time       DateTime
   movie      Movie    @relation(fields: [movieId], references: [id])
-  movieId    String   @unique
+  movieId    String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @default(now())
 
   @@map("sessions")
+}
+
+model GlobalParameter {
+  id    String @id @default(uuid())
+  name  String @unique
+  value String
+
+  @@map("globalparameters")
 }
 
 model Sale {

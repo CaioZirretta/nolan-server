@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { Room, Session } from "@prisma/client";
 
 export const FindRoomSchema = z.object({
     id: z.string(),
@@ -22,5 +23,15 @@ export type UpdateRoomType = z.infer<typeof UpdateRoomSchema>
 export const DeleteRoomSchema = z.object({ id: z.string() });
 
 export type DeleteRoomType = z.infer<typeof DeleteRoomSchema>
+
+export const ListWithSessionsByIdSchema = z.object({
+    number: z.number(),
+});
+
+export type ListWithSessionsById = z.infer<typeof ListWithSessionsByIdSchema>
+
+export type RoomWithSession = Room & {
+    sessions: Session[]
+};
 
 

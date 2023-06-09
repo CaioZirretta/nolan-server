@@ -43,6 +43,15 @@ export class SessionRepository implements BaseCrudRepository<Session> {
         return result;
     }
 
+    async searchByRoomAndTime(roomNumber: number, time: Date): Promise<any> {
+        return await prisma.session.findFirst({
+            where: {
+                roomNumber,
+                time
+            }
+        });
+    }
+
     async create({ roomNumber, sits, time, movieId }: CreateSessionType): Promise<Session> {
         const room: Room | null = await roomRepository.searchByNumber(roomNumber);
 
@@ -56,14 +65,18 @@ export class SessionRepository implements BaseCrudRepository<Session> {
             throw new NolanError(ErrorMessage.MOVIE_NOT_FOUND);
         }
 
+        const session: Session | null = await this.searchByRoomAndTime(roomNumber, time)
+
+        if(session) {
+            throw new NolanError(ErrorMessage.SESSION_IN_GIVEN_TIME_ALREADY_EXISTS)
+        }
+
         return prisma.session.create({
             data: {
                 roomNumber,
                 sits,
                 time,
-                movieId,
-                updatedAt: new Date(),
-                createdAt: new Date()
+                movieId
             },
         });
     }

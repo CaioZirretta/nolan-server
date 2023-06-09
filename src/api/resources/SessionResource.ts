@@ -25,16 +25,16 @@ export class SessionResource {
         return service.searchById(req, res);
     }
 
-    static async searchByRoom(req: Request, res: Response) {
+    static async searchByRoom(req: Request, res: Response): Promise<Response> {
         try {
-            FindSessionByRoomSchema.parse({ roomNumber: req.params.roomNumber });
+            FindSessionByRoomSchema.parse({ roomNumber: parseInt(req.params.roomNumber) });
         } catch (error) {
             return res.status(400).send({ message: error });
         }
-        return service.searchById(req, res);
+        return service.searchByRoom(req, res);
     }
 
-    static async create(req: Request, res: Response) {
+    static async create(req: Request, res: Response): Promise<Response> {
         try {
             CreateSessionSchema.parse(req.body);
         } catch (error: any) {
@@ -43,7 +43,7 @@ export class SessionResource {
         return service.create(req, res);
     }
 
-    static async update(req: Request, res: Response) {
+    static async update(req: Request, res: Response): Promise<Response> {
         try {
             UpdateSessionSchema.parse(req.body);
         } catch (error: any) {
@@ -53,7 +53,7 @@ export class SessionResource {
         return service.update(req, res);
     }
 
-    static async delete(req: Request, res: Response) {
+    static async delete(req: Request, res: Response): Promise<Response> {
         try {
             DeleteSessionSchema.parse({ id: req.params.id });
         } catch (error: any) {

@@ -9,7 +9,7 @@ const repository = new UserRepository();
 const service = new UserService(repository);
 
 export class UserResource {
-    static async login(req: Request, res: Response) {
+    static async login(req: Request, res: Response): Promise<Response> {
         try {
             LoginRequestSchema.parse(req.body);
         } catch (err: any) {
@@ -19,7 +19,7 @@ export class UserResource {
         return service.login(req, res);
     }
 
-    static async create(req: Request, res: Response) {
+    static async create(req: Request, res: Response): Promise<Response> {
         try {
             CreateUserSchema.parse(req.body);
         } catch (err: any) {

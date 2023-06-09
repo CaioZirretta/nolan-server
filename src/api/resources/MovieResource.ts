@@ -11,7 +11,7 @@ export class MovieResource {
         return service.list(req, res);
     }
 
-    static async searchById(req: Request, res: Response) {
+    static async searchById(req: Request, res: Response): Promise<Response> {
         try {
             FindMovieSchema.parse({ id: req.params.id });
         } catch (error) {
@@ -20,7 +20,7 @@ export class MovieResource {
         return service.searchById(req, res);
     }
 
-    static async create(req: Request, res: Response) {
+    static async create(req: Request, res: Response): Promise<Response> {
         try {
             CreateMovieSchema.parse(req.body);
         } catch (error: any) {
@@ -29,7 +29,7 @@ export class MovieResource {
         return service.create(req, res);
     }
 
-    static async update(req: Request, res: Response) {
+    static async update(req: Request, res: Response): Promise<Response> {
         try {
             UpdateMovieSchema.parse(req.body);
         } catch (error: any) {
@@ -39,7 +39,7 @@ export class MovieResource {
         return service.update(req, res);
     }
 
-    static async delete(req: Request, res: Response) {
+    static async delete(req: Request, res: Response): Promise<Response> {
         try {
             DeleteMovieSchema.parse({ id: req.params.id });
         } catch (error: any) {
