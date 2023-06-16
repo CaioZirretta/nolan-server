@@ -9,10 +9,6 @@ export class RoomRepository implements BaseCrudRepository<Room> {
     async list(): Promise<Room[]> {
         const result: Room[] = await prisma.room.findMany();
 
-        if (result.length === 0) {
-            throw new NolanError(ErrorMessage.ROOMS_NOT_FOUND);
-        }
-
         return result;
     }
 
@@ -42,6 +38,7 @@ export class RoomRepository implements BaseCrudRepository<Room> {
         if (result) {
             throw new NolanError(ErrorMessage.ROOM_ALREADY_EXISTS);
         }
+
         return prisma.room.create({
             data: {
                 number,

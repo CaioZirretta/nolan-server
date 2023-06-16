@@ -32,13 +32,14 @@ export class RoomResource {
         return service.listWithSessions(req, res);
     }
 
-    static async listWithSessionsByRoomId(req: Request, res: Response) {
+    static async listWithSessionsByRoomNumber(req: Request, res: Response) {
         try {
-            ListWithSessionsByIdSchema.parse({ id: req.params.id });
+            ListWithSessionsByIdSchema.parse({ number: req.params.number });
         } catch (error) {
-            return res.status(400).send({ message: error});
+            return res.status(400).send({ message: error });
         }
-        return service.listWithSessionsByRoomId(req, res);
+
+        return service.listWithSessionsByRoomNumber(req, res);
     }
 
     static async create(req: Request, res: Response): Promise<Response> {

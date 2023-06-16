@@ -17,6 +17,7 @@ export const CreateSessionSchema = z.object({
     sits: z.string().array(),
     time: z.coerce.date().min(new Date(new Date().getTime() - (30000))),
     movieId: z.string(),
+    movieName: z.string(),
 });
 
 export type CreateSessionType = z.infer<typeof CreateSessionSchema>;
@@ -27,6 +28,7 @@ export const UpdateSessionSchema = z.object({
     sits: z.string().array(),
     time: z.coerce.date().min(new Date(new Date().getTime() - (60 * 60 * 1000))),
     movieId: z.string(),
+    movieName: z.string(),
 });
 
 export type UpdateSessionType = z.infer<typeof UpdateSessionSchema>;

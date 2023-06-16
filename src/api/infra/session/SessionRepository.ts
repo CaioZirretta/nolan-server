@@ -14,10 +14,6 @@ export class SessionRepository implements BaseCrudRepository<Session> {
     async list(): Promise<Session[]> {
         const result: Session[] = await prisma.session.findMany();
 
-        if (result.length === 0) {
-            throw new NolanError(ErrorMessage.SESSIONS_NOT_FOUND);
-        }
-
         return result;
     }
 
@@ -52,7 +48,7 @@ export class SessionRepository implements BaseCrudRepository<Session> {
         });
     }
 
-    async create({ roomNumber, sits, time, movieId }: CreateSessionType): Promise<Session> {
+    async create({ roomNumber, sits, time, movieId, movieName }: CreateSessionType): Promise<Session> {
         const room: Room | null = await roomRepository.searchByNumber(roomNumber);
 
         if (!room) {
@@ -63,6 +59,10 @@ export class SessionRepository implements BaseCrudRepository<Session> {
 
         if (!movie) {
             throw new NolanError(ErrorMessage.MOVIE_NOT_FOUND);
+        }
+
+        if(movie.name !== movieName) {
+            throw new NolanError(ErrorMessage.MOVIE_WRONG_NAME);
         }
 
         const session: Session | null = await this.searchByRoomAndTime(roomNumber, time)
@@ -76,12 +76,13 @@ export class SessionRepository implements BaseCrudRepository<Session> {
                 roomNumber,
                 sits,
                 time,
-                movieId
+                movieId,
+                movieName
             },
         });
     }
 
-    async update({ id, roomNumber, sits, time, movieId }: UpdateSessionType): Promise<Session> {
+    async update({ id, roomNumber, sits, time, movieId, movieName }: UpdateSessionType): Promise<Session> {
         const result: Session = await prisma.session.update({
             where: { id },
             data: {
@@ -89,6 +90,7 @@ export class SessionRepository implements BaseCrudRepository<Session> {
                 sits,
                 time,
                 movieId,
+                movieName,
                 updatedAt: new Date(),
             },
         });

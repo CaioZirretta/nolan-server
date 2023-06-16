@@ -5,4 +5,4 @@ export const GlobalParameterSchema = z.object({
     value: z.string()
 });
 
-export type GlobalParameter = z.infer<typeof GlobalParameterSchema>;
+export type GlobalParameterType = z.infer<typeof GlobalParameterSchema>;

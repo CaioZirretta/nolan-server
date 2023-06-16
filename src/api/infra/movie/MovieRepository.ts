@@ -2,16 +2,23 @@ import { prisma } from "../../../prisma";
 import { Movie } from "@prisma/client";
 import { NolanError } from "../../error/NolanError";
 import { ErrorMessage } from "../../error/ErrorMessage";
-import { CreateMovieType, UpdateMovieType } from "../../domain/movie/MovieSchema";
+import { CreateMovieType, MovieIdName, UpdateMovieType } from "../../domain/movie/MovieSchema";
 import { BaseCrudRepository } from "../BaseCrudRepository";
 
 export class MovieRepository implements BaseCrudRepository<Movie> {
     async list(): Promise<Movie[]> {
         const result: Movie[] = await prisma.movie.findMany();
 
-        if (result.length === 0) {
-            throw new NolanError(ErrorMessage.MOVIES_NOT_FOUND);
-        }
+        return result;
+    }
+
+    async listIdName(): Promise<MovieIdName[]> {
+        const result: MovieIdName[] = await prisma.movie.findMany({
+            select: {
+                id: true,
+                name: true,
+            }
+        });
 
         return result;
     }
@@ -25,6 +32,13 @@ export class MovieRepository implements BaseCrudRepository<Movie> {
 
         return result;
     }
+
+    // TODO Testar depois
+    // async create(movie: CreateMovieType): Promise<Movie> {
+    //     return prisma.movie.create({
+    //         data: movie,
+    //     });
+    // }
 
     async create({ name, synopsis, synopsis_expanded, banner }: CreateMovieType): Promise<Movie> {
         return prisma.movie.create({

@@ -1,7 +1,6 @@
 import { SessionRepository } from "../../infra/session/SessionRepository";
 import { Request, Response } from "express";
 import { Session } from "@prisma/client";
-import { CreateSessionType } from "./SessionSchema";
 import { onlyHourNonZero } from "../../utils/DateUtils";
 
 export class SessionService {
@@ -9,13 +8,7 @@ export class SessionService {
     }
 
     async list(req: Request, res: Response): Promise<Response> {
-        let result: Session[];
-
-        try {
-            result = await this.repository.list();
-        } catch (error: any) {
-            return res.status(400).send({ error });
-        }
+        let result: Session[] = await this.repository.list();
 
         return res.status(200).send(result);
     }
@@ -45,16 +38,19 @@ export class SessionService {
     }
 
     async create(req: Request, res: Response): Promise<Response> {
-        const { roomNumber, sits, time, movieId } = req.body;
+        const { roomNumber, sits, time, movieId, movieName } = req.body;
 
         let result: Session;
 
         try {
+            this.validateTime(time);
+
             result = await this.repository.create({
                 roomNumber,
                 sits,
                 time: onlyHourNonZero(time),
-                movieId
+                movieId,
+                movieName
             });
         } catch (error: any) {
             return res.status(400).send({ error });
@@ -64,17 +60,20 @@ export class SessionService {
     }
 
     async update(req: Request, res: Response): Promise<Response> {
-        const { id, roomNumber, sits, time, movieId } = req.body;
+        const { id, roomNumber, sits, time, movieId, movieName } = req.body;
 
         let result: Session;
 
         try {
+            this.validateTime(time);
+
             result = await this.repository.update({
                 id,
                 roomNumber,
                 sits,
                 time,
-                movieId
+                movieId,
+                movieName
             });
         } catch (error: any) {
             return res.status(400).send({ error });
@@ -93,5 +92,9 @@ export class SessionService {
         }
 
         return res.status(200).send(result);
+    }
+
+    validateTime(time: Date) {
+
     }
 }

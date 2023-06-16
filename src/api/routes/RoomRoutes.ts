@@ -8,7 +8,7 @@ const baseUrl = "/room";
 
 roomRoutes.get(baseUrl, authenticationFilter, RoomResource.list);
 roomRoutes.get(baseUrl + "/sessions", authenticationFilter, RoomResource.listWithSessions);
-roomRoutes.get(baseUrl + "/sessions/:id", authenticationFilter, RoomResource.listWithSessionsByRoomId);
+roomRoutes.get(baseUrl + "/sessions/:number", authenticationFilter, RoomResource.listWithSessionsByRoomNumber);
 roomRoutes.get(baseUrl + "/:id", authenticationFilter, RoomResource.searchById);
 
 roomRoutes.post(baseUrl, authenticationFilter, RoomResource.create);

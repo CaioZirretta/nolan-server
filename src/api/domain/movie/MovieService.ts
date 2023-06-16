@@ -2,19 +2,20 @@ import { MovieRepository } from "../../infra/movie/MovieRepository";
 import { Request, Response } from "express";
 import { Movie } from "@prisma/client";
 import { ErrorMessage } from "../../error/ErrorMessage";
+import { MovieIdName } from "./MovieSchema";
 
 export class MovieService {
     constructor(private repository: MovieRepository) {
     }
 
     async list(req: Request, res: Response): Promise<Response> {
-        let result: Movie[];
+        const result: Movie[] = await this.repository.list();
 
-        try {
-            result = await this.repository.list();
-        } catch (error: any) {
-            return res.status(400).send({ error });
-        }
+        return res.status(200).send(result);
+    }
+
+    async listIdName(req: Request, res: Response): Promise<Response> {
+        const result: MovieIdName[] = await this.repository.listIdName();
 
         return res.status(200).send(result);
     }

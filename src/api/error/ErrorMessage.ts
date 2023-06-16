@@ -20,4 +20,7 @@ export enum ErrorMessage {
     MISSING_AUTH = "Authentication not found",
     DATE_ISO_REQUIRED = "Date must be in ISO format",
     MOVIE_NAME_TOO_LARGE = "Movie name must be of a maximum length of 36",
+    MOVIE_WRONG_NAME = "Movie name does not match",
+    GLOBALPARAMETER_NOT_FOUND = "Global parameter not found",
+    GLOBALPARAMETER_ALREADY_EXISTS= "Global parameter already exists",
 }

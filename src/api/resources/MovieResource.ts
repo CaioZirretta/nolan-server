@@ -11,6 +11,10 @@ export class MovieResource {
         return service.list(req, res);
     }
 
+    static async listIdName(req: Request, res: Response) {
+        return service.listIdName(req, res);
+    }
+
     static async searchById(req: Request, res: Response): Promise<Response> {
         try {
             FindMovieSchema.parse({ id: req.params.id });

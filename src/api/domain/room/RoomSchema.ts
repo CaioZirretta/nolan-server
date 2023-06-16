@@ -25,7 +25,7 @@ export const DeleteRoomSchema = z.object({ id: z.string() });
 export type DeleteRoomType = z.infer<typeof DeleteRoomSchema>
 
 export const ListWithSessionsByIdSchema = z.object({
-    number: z.number(),
+    number: z.string(),
 });
 
 export type ListWithSessionsById = z.infer<typeof ListWithSessionsByIdSchema>

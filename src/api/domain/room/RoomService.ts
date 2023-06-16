@@ -12,13 +12,7 @@ export class RoomService {
     }
 
     async list(req: Request, res: Response): Promise<Response> {
-        let result: Room[];
-
-        try {
-            result = await this.roomRepository.list();
-        } catch (error: any) {
-            return res.status(400).send({ error });
-        }
+        let result: Room[] = await this.roomRepository.list();
 
         return res.status(200).send(result);
     }
@@ -36,16 +30,14 @@ export class RoomService {
     }
 
     async listWithSessions(req: Request, res: Response): Promise<Response> {
-        const rooms: Room[] = await this.roomRepository.list();
+        let rooms: Room[];
+        let sessions: Session[];
 
-        if (!rooms) {
-            throw new NolanError(ErrorMessage.ROOMS_NOT_FOUND);
-        }
-
-        const sessions: Session[] = await this.sessionRepository.list();
-
-        if (!sessions) {
-            throw new NolanError(ErrorMessage.SESSIONS_NOT_FOUND);
+        try {
+            rooms = await this.roomRepository.list();
+            sessions = await this.sessionRepository.list();
+        } catch (error: any) {
+            return res.status(404).send({ error });
         }
 
         let roomWithSessions: RoomWithSession[] = rooms.map((room: Room) => {
@@ -61,11 +53,27 @@ export class RoomService {
         return res.status(200).send(roomWithSessions);
     }
 
-    async listWithSessionsByRoomId(req: Request, res: Response): Promise<Response> {
-        let result: RoomWithSession[];
+    async listWithSessionsByRoomNumber(req: Request, res: Response): Promise<Response> {
+        const roomNumber: number = parseInt(req.params.number);
+        let room: Room = {} as Room;
+        let sessions: Session[] = [];
 
+        try {
+            room = await this.roomRepository.searchByNumber(roomNumber);
+            sessions = await this.sessionRepository.searchByRoom(roomNumber);
+        } catch (error: any) {
+            res.status(404).send({ error });
+        }
 
-        return res.status(200).send(undefined);
+        let roomWithSessions: RoomWithSession = {
+            id: room.id,
+            number: room.number,
+            createdAt: room.createdAt,
+            updatedAt: room.updatedAt,
+            sessions: sessions
+        };
+
+        return res.status(200).send(roomWithSessions);
     }
 
     async create(req: Request, res: Response): Promise<Response> {

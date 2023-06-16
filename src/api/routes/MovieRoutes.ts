@@ -7,6 +7,8 @@ export const movieRoutes = Router();
 const baseUrl = "/movie";
 
 movieRoutes.get(baseUrl, authenticationFilter, MovieResource.list);
+movieRoutes.get(baseUrl + "/", authenticationFilter, MovieResource.list);
+movieRoutes.get(baseUrl + "/idName", authenticationFilter, MovieResource.listIdName);
 movieRoutes.get(baseUrl + "/:id", authenticationFilter, MovieResource.searchById);
 movieRoutes.post(baseUrl, authenticationFilter, MovieResource.create);
 movieRoutes.put(baseUrl, authenticationFilter, MovieResource.update);

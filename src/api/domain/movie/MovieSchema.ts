@@ -2,6 +2,11 @@ import { z } from "zod";
 
 // Inserir belas mensagens de erro dentro do string() com um objeto {}
 
+export type MovieIdName = {
+    id: string,
+    name: string,
+}
+
 export const FindMovieSchema = z.object({
     id: z.string(),
 });
