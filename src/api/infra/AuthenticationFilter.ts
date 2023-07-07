@@ -7,6 +7,14 @@ dotenv.config();
 const secretKey: string = process.env.SECRET_KEY!;
 
 export function authenticationFilter(req: Request, res: Response, next: NextFunction): Response | void {
+	const customerOrigin = [process.env.CUSTOMER_ORIGIN]
+
+	const origin = req.headers.origin;
+
+	if(origin && customerOrigin.includes(origin)) {
+		return next();
+	}
+
 	if (!req.headers.authorization) {
 		return res.status(400).send({ message: ErrorMessage.MISSING_AUTH });
 	}

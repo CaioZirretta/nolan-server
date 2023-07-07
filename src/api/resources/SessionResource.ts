@@ -3,7 +3,7 @@ import { SessionRepository } from "../infra/session/SessionRepository";
 import { SessionService } from "../domain/session/SessionService";
 import {
     CreateSessionSchema,
-    DeleteSessionSchema, FindSessionByRoomSchema,
+    DeleteSessionSchema, FindSessionByMovieNameSchema, FindSessionByRoomSchema,
     FindSessionSchema,
     UpdateSessionSchema
 } from "../domain/session/SessionSchema";
@@ -13,12 +13,16 @@ const service: SessionService = new SessionService(repository);
 
 export class SessionResource {
     static async list(req: Request, res: Response) {
+        if(req.query.id) {
+            return SessionResource.searchById(req, res);
+        }
+
         return service.list(req, res);
     }
 
     static async searchById(req: Request, res: Response) {
         try {
-            FindSessionSchema.parse({ id: req.params.id });
+            FindSessionSchema.parse({ id: req.query.id });
         } catch (error) {
             return res.status(400).send({ message: error });
         }
@@ -27,11 +31,20 @@ export class SessionResource {
 
     static async searchByRoom(req: Request, res: Response): Promise<Response> {
         try {
-            FindSessionByRoomSchema.parse({ roomNumber: parseInt(req.params.roomNumber) });
+            FindSessionByRoomSchema.parse({ roomNumber: parseInt(req.query.roomNumber as string) });
         } catch (error) {
             return res.status(400).send({ message: error });
         }
         return service.searchByRoom(req, res);
+    }
+
+    static async searchByMovieName(req: Request, res: Response): Promise<Response> {
+        try {
+            FindSessionByMovieNameSchema.parse({ movieName: req.query.movieName });
+        } catch (error) {
+            return res.status(400).send({ message: error });
+        }
+        return service.searchByMovieName(req, res);
     }
 
     static async create(req: Request, res: Response): Promise<Response> {
@@ -55,7 +68,7 @@ export class SessionResource {
 
     static async delete(req: Request, res: Response): Promise<Response> {
         try {
-            DeleteSessionSchema.parse({ id: req.params.id });
+            DeleteSessionSchema.parse({ id: req.query.id });
         } catch (error: any) {
             return res.status(400).send({ message: error });
         }

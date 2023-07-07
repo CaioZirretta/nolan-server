@@ -15,9 +15,10 @@ export class SessionService {
 
     async searchById(req: Request, res: Response): Promise<Response> {
         let result: Session;
+        const id: string = req.query.id! as string;
 
         try {
-            result = await this.repository.searchById(req.params.id);
+            result = await this.repository.searchById(id);
         } catch (error: any) {
             return res.status(400).send({ error });
         }
@@ -35,6 +36,21 @@ export class SessionService {
         }
 
         return res.status(200).send(result);
+    }
+
+    async searchByMovieName(req: Request, res: Response): Promise<Response> {
+        let result: Session[];
+
+        const { movieName } = req.query;
+
+        try {
+            result = await this.repository.searchByMovieName(movieName as string);
+        } catch (error: any) {
+            return res.status(400).send({ error });
+        }
+
+        return res.status(200).send(result);
+
     }
 
     async create(req: Request, res: Response): Promise<Response> {
@@ -85,8 +101,10 @@ export class SessionService {
     async delete(req: Request, res: Response): Promise<Response> {
         let result: Session;
 
+        const { id } = req.query
+
         try {
-            result = await this.repository.delete(req.params.id);
+            result = await this.repository.delete(id as string);
         } catch (error: any) {
             return res.status(400).send({ error });
         }

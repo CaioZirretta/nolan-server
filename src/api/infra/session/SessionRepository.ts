@@ -40,12 +40,17 @@ export class SessionRepository implements BaseCrudRepository<Session> {
     }
 
     async searchByRoomAndTime(roomNumber: number, time: Date): Promise<any> {
-        return await prisma.session.findFirst({
+        return prisma.session.findFirst({
             where: {
                 roomNumber,
                 time
             }
         });
+    }
+
+    async searchByMovieName(movieName: string): Promise<Session[]> {
+        console.log(movieName);
+        return prisma.session.findMany({ where: { movieName } });
     }
 
     async create({ roomNumber, sits, time, movieId, movieName }: CreateSessionType): Promise<Session> {
@@ -61,14 +66,14 @@ export class SessionRepository implements BaseCrudRepository<Session> {
             throw new NolanError(ErrorMessage.MOVIE_NOT_FOUND);
         }
 
-        if(movie.name !== movieName) {
+        if (movie.name !== movieName) {
             throw new NolanError(ErrorMessage.MOVIE_WRONG_NAME);
         }
 
-        const session: Session | null = await this.searchByRoomAndTime(roomNumber, time)
+        const session: Session | null = await this.searchByRoomAndTime(roomNumber, time);
 
-        if(session) {
-            throw new NolanError(ErrorMessage.SESSION_IN_GIVEN_TIME_ALREADY_EXISTS)
+        if (session) {
+            throw new NolanError(ErrorMessage.SESSION_IN_GIVEN_TIME_ALREADY_EXISTS);
         }
 
         return prisma.session.create({

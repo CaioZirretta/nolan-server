@@ -4,13 +4,19 @@ export const FindSessionSchema = z.object({
     id: z.string(),
 });
 
-export type FindSessionType = z.infer<typeof FindSessionSchema>
+export type FindSessionTypeType = z.infer<typeof FindSessionSchema>
 
 export const FindSessionByRoomSchema = z.object({
     roomNumber: z.number(),
 })
 
-export type FindSessionByRoom = z.infer<typeof FindSessionByRoomSchema>
+export type FindSessionByRoomType = z.infer<typeof FindSessionByRoomSchema>
+
+export const FindSessionByMovieNameSchema = z.object({
+    movieName: z.string(),
+})
+
+export type FindSessionByMovieNameType = z.infer<typeof FindSessionByMovieNameSchema>
 
 export const CreateSessionSchema = z.object({
     roomNumber: z.number(),

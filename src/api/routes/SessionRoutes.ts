@@ -6,9 +6,12 @@ export const sessionRoutes = Router();
 
 const baseUrl = "/session";
 
+// TODO padronizar o req.query nos outros domínios
+// Mudar também as requisições no front
+
 sessionRoutes.get(baseUrl, authenticationFilter, SessionResource.list);
-sessionRoutes.get(baseUrl + "/:id", authenticationFilter, SessionResource.searchById);
-sessionRoutes.get(baseUrl + "/room/:roomNumber", authenticationFilter, SessionResource.searchByRoom);
+sessionRoutes.get(baseUrl + "/room/", authenticationFilter, SessionResource.searchByRoom);
+sessionRoutes.get(baseUrl + "/movie/", authenticationFilter, SessionResource.searchByMovieName);
 sessionRoutes.post(baseUrl, authenticationFilter, SessionResource.create);
 sessionRoutes.put(baseUrl, authenticationFilter, SessionResource.update);
-sessionRoutes.delete(baseUrl + "/:id", authenticationFilter, SessionResource.delete);
+sessionRoutes.delete(baseUrl, authenticationFilter, SessionResource.delete);

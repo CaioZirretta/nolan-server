@@ -23,7 +23,7 @@ export class ParameterRepository {
     async create(parameter: GlobalParameterType): Promise<GlobalParameter> {
         const result: GlobalParameter | null = await prisma.globalParameter.findUnique({ where: { name: parameter.name } });
 
-        if(result) {
+        if (result) {
             throw new NolanError(ErrorMessage.GLOBALPARAMETER_ALREADY_EXISTS);
         }
 
@@ -31,6 +31,12 @@ export class ParameterRepository {
     }
 
     async update(parameter: GlobalParameterType): Promise<GlobalParameter> {
-        
+        const result: GlobalParameter | null = await prisma.globalParameter.findUnique({ where: { name: parameter.name } });
+
+        if (!result) {
+            throw new NolanError(ErrorMessage.GLOBALPARAMETER_NOT_FOUND);
+        }
+
+        return prisma.globalParameter.update({ where: { name: parameter.name }, data: parameter });
     }
 }
