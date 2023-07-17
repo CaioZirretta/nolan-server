@@ -7,7 +7,7 @@ import { UpdateRoomType } from "../../domain/room/RoomSchema";
 
 export class RoomRepository implements BaseCrudRepository<Room> {
     async list(): Promise<Room[]> {
-        const result: Room[] = await prisma.room.findMany();
+        const result: Room[] = await prisma.room.findMany({ orderBy: { createdAt: 'asc' } });
 
         return result;
     }

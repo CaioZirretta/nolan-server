@@ -7,7 +7,7 @@ import { BaseCrudRepository } from "../BaseCrudRepository";
 
 export class MovieRepository implements BaseCrudRepository<Movie> {
     async list(): Promise<Movie[]> {
-        const result: Movie[] = await prisma.movie.findMany();
+        const result: Movie[] = await prisma.movie.findMany({ orderBy: { createdAt: 'asc' } });
 
         return result;
     }
@@ -17,7 +17,8 @@ export class MovieRepository implements BaseCrudRepository<Movie> {
             select: {
                 id: true,
                 name: true,
-            }
+            },
+            orderBy: { createdAt: 'asc' }
         });
 
         return result;
