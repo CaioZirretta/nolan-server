@@ -81,7 +81,14 @@ export class SessionRepository implements BaseCrudRepository<Session> {
     }
 
     async newReservation({sessionId, sits}: NewReservationType ): Promise<any> {
+        const session = await this.searchById(sessionId);
 
+        sits.forEach(sit => session.sits.push(sit));
+
+        return prisma.session.update({
+            where: { id: sessionId },
+            data:{ sits: session.sits }
+        })
     }
 
     async update({ id, roomNumber, sits, time, movieId, movieName }: UpdateSessionType): Promise<Session> {
