@@ -4,7 +4,7 @@ import { SessionService } from "../domain/session/SessionService";
 import {
     CreateSessionSchema,
     DeleteSessionSchema, FindSessionByMovieNameSchema, FindSessionByRoomSchema,
-    FindSessionSchema,
+    FindSessionSchema, NewReservationSchema,
     UpdateSessionSchema
 } from "../domain/session/SessionSchema";
 
@@ -54,6 +54,15 @@ export class SessionResource {
             return res.status(400).send({ message: error });
         }
         return service.create(req, res);
+    }
+
+    static async newReservation(req: Request, res: Response): Promise<Response> {
+        try {
+            NewReservationSchema.parse(req.body);
+        } catch (error: any) {
+            return res.status(400).send({ message: error });
+        }
+        return service.newReservation(req, res);
     }
 
     static async update(req: Request, res: Response): Promise<Response> {

@@ -3,7 +3,7 @@ import { Movie, Room, Session } from "@prisma/client";
 import { prisma } from "../../../prisma";
 import { NolanError } from "../../error/NolanError";
 import { ErrorMessage } from "../../error/ErrorMessage";
-import { CreateSessionType, UpdateSessionType } from "../../domain/session/SessionSchema";
+import { CreateSessionType, NewReservationType, UpdateSessionType } from "../../domain/session/SessionSchema";
 import { RoomRepository } from "../room/RoomRepository";
 import { MovieRepository } from "../movie/MovieRepository";
 
@@ -12,7 +12,9 @@ const movieRepository = new MovieRepository();
 
 export class SessionRepository implements BaseCrudRepository<Session> {
     async list(): Promise<Session[]> {
-        const result: Session[] = await prisma.session.findMany();
+        const result: Session[] = await prisma.session.findMany({
+            orderBy:{ time: 'asc'}
+        });
 
         return result;
     }
@@ -85,6 +87,10 @@ export class SessionRepository implements BaseCrudRepository<Session> {
                 movieName
             },
         });
+    }
+
+    async newReservation({sessionId, sits}: NewReservationType ): Promise<any> {
+
     }
 
     async update({ id, roomNumber, sits, time, movieId, movieName }: UpdateSessionType): Promise<Session> {

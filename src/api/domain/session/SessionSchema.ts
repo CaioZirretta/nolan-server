@@ -28,6 +28,13 @@ export const CreateSessionSchema = z.object({
 
 export type CreateSessionType = z.infer<typeof CreateSessionSchema>;
 
+export const NewReservationSchema = z.object({
+    sessionId: z.string(),
+    sits: z.string().array(),
+})
+
+export type NewReservationType = z.infer<typeof NewReservationSchema>;
+
 export const UpdateSessionSchema = z.object({
     id: z.string(),
     roomNumber: z.number(),
