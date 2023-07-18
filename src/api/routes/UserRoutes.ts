@@ -7,5 +7,5 @@ export const userRoutes = Router()
 const userUrl = "/user"
 const loginUrl = "/login"
 
-userRoutes.post(userUrl, authenticationFilter, UserResource.create)
+userRoutes.post(userUrl, UserResource.create)
 userRoutes.post(loginUrl, UserResource.login)
