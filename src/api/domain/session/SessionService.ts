@@ -1,7 +1,7 @@
 import { SessionRepository } from "../../infra/session/SessionRepository";
 import { Request, Response } from "express";
 import { Session } from "@prisma/client";
-import { onlyHourNonZero } from "../../utils/DateUtils";
+import { formatDateSecAndMilSecToZero } from "../../utils/DateUtils";
 
 export class SessionService {
     constructor(private repository: SessionRepository) {
@@ -64,7 +64,7 @@ export class SessionService {
             result = await this.repository.create({
                 roomNumber,
                 sits,
-                time: onlyHourNonZero(time),
+                time: formatDateSecAndMilSecToZero(time),
                 movieId,
                 movieName
             });

@@ -2,6 +2,7 @@ import express, { Express } from "express";
 import { router } from "./api/routes";
 import cors from "cors";
 import { NolanError } from "./api/error/NolanError";
+import { ErrorMessage } from "./api/error/ErrorMessage";
 
 const server: Express = express();
 const port = 3333 || process.env.PORT;
@@ -11,7 +12,7 @@ const corsOptions = {
         if (!origin || origin.includes('localhost')) {
             callback(null, true);
         } else {
-            callback(new NolanError('Origem de acesso não permitida'));
+            callback(new NolanError(ErrorMessage.ORIGEM_NAO_PERMITIDA));
         }
     },
     optionsSuccessStatus: 200
@@ -25,3 +26,5 @@ router(server);
 server.listen(port, () => {
     console.log("server listening on port " + port);
 });
+
+

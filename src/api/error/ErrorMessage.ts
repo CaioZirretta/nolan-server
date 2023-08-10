@@ -23,4 +23,5 @@ export enum ErrorMessage {
     MOVIE_WRONG_NAME = "Movie name does not match",
     GLOBALPARAMETER_NOT_FOUND = "Global parameter not found",
     GLOBALPARAMETER_ALREADY_EXISTS= "Global parameter already exists",
+    ORIGEM_NAO_PERMITIDA="Origem de acesso não permitida"
 }
