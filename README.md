@@ -1,7 +1,7 @@
 [🇧🇷](#pt-br) / [🇺🇸](#en-us) 
 
 <a id="pt-br"></a>
-# Nolan - Server {#pt-br}
+# Nolan - Server 
 Este é o meu projeto final para o curso de engenharia de computação para a Universidade Federal de Goiás.
 
 ## Sobre
