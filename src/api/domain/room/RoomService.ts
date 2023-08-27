@@ -1,10 +1,8 @@
 import { Request, Response } from "express";
 import { RoomRepository } from "../../infra/room/RoomRepository";
-import { Movie, Room, Session } from "@prisma/client";
+import { Room, Session } from "@prisma/client";
 import { RoomWithSession } from "./RoomSchema";
 import { SessionRepository } from "../../infra/session/SessionRepository";
-import { NolanError } from "../../error/NolanError";
-import { ErrorMessage } from "../../error/ErrorMessage";
 
 export class RoomService {
     constructor(private roomRepository: RoomRepository,
@@ -20,8 +18,10 @@ export class RoomService {
     async searchById(req: Request, res: Response): Promise<Response> {
         let result: Room;
 
+        const { id } = req.query;
+
         try {
-            result = await this.roomRepository.searchById(req.params.id);
+            result = await this.roomRepository.searchById(id as string);
         } catch (error: any) {
             return res.status(400).send({ error });
         }
@@ -54,7 +54,7 @@ export class RoomService {
     }
 
     async listWithSessionsByRoomNumber(req: Request, res: Response): Promise<Response> {
-        const roomNumber: number = parseInt(req.params.number);
+        const roomNumber: number = parseInt(req.query.id as string);
         let room: Room = {} as Room;
         let sessions: Session[] = [];
 
@@ -110,8 +110,10 @@ export class RoomService {
     async delete(req: Request, res: Response): Promise<Response> {
         let result: Room;
 
+        const { id } = req.query;
+
         try {
-            result = await this.roomRepository.delete(req.params.id);
+            result = await this.roomRepository.delete(id as string);
         } catch (error: any) {
             return res.status(400).send({ error });
         }

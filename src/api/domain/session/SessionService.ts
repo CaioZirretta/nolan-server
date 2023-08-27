@@ -129,7 +129,7 @@ export class SessionService {
         return res.status(200).send(result);
     }
 
-    validateTime(time: string) {
+    validateTime(time: string): string {
         return new Date(time).toISOString();
     }
 }

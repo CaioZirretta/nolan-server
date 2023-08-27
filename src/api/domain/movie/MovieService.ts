@@ -1,7 +1,6 @@
 import { MovieRepository } from "../../infra/movie/MovieRepository";
 import { Request, Response } from "express";
 import { Movie } from "@prisma/client";
-import { ErrorMessage } from "../../error/ErrorMessage";
 import { MovieIdName } from "./MovieSchema";
 
 export class MovieService {
@@ -74,8 +73,10 @@ export class MovieService {
     async delete(req: Request, res: Response): Promise<Response> {
         let result: Movie;
 
+        const { id } = req.query
+
         try {
-            result = await this.repository.delete(req.params.id);
+            result = await this.repository.delete(id as string);
         } catch (error: any) {
             return res.status(400).send({ error });
         }

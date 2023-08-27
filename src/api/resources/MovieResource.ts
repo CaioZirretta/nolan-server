@@ -7,11 +7,11 @@ const repository: MovieRepository = new MovieRepository();
 const service: MovieService = new MovieService(repository);
 
 export class MovieResource {
-    static async list(req: Request, res: Response) {
+    static async list(req: Request, res: Response): Promise<Response> {
         return service.list(req, res);
     }
 
-    static async listIdName(req: Request, res: Response) {
+    static async listIdName(req: Request, res: Response): Promise<Response> {
         return service.listIdName(req, res);
     }
 
@@ -45,7 +45,7 @@ export class MovieResource {
 
     static async delete(req: Request, res: Response): Promise<Response> {
         try {
-            DeleteMovieSchema.parse({ id: req.params.id });
+            DeleteMovieSchema.parse({ id: req.query.id });
         } catch (error: any) {
             return res.status(400).send({ message: error });
         }
