@@ -1,39 +1,17 @@
-/*
-  Warnings:
+-- CreateTable
+CREATE TABLE "users" (
+    "id" TEXT NOT NULL,
+    "user" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3),
 
-  - You are about to drop the `Movie` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Reservation` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Room` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Sale` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Session` table. If the table is not empty, all the data it contains will be lost.
-
-*/
--- DropForeignKey
-ALTER TABLE "Session" DROP CONSTRAINT "Session_movieId_fkey";
-
--- DropForeignKey
-ALTER TABLE "Session" DROP CONSTRAINT "Session_roomNumber_fkey";
-
--- DropTable
-DROP TABLE "Movie";
-
--- DropTable
-DROP TABLE "Reservation";
-
--- DropTable
-DROP TABLE "Room";
-
--- DropTable
-DROP TABLE "Sale";
-
--- DropTable
-DROP TABLE "Session";
+    CONSTRAINT "users_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "rooms" (
     "id" TEXT NOT NULL,
     "number" INTEGER NOT NULL,
-    "sits" JSONB NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -43,10 +21,10 @@ CREATE TABLE "rooms" (
 -- CreateTable
 CREATE TABLE "movies" (
     "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
+    "name" VARCHAR(36) NOT NULL,
     "synopsis" TEXT NOT NULL,
     "synopsis_expanded" TEXT NOT NULL,
-    "banner" BYTEA NOT NULL,
+    "banner" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -57,12 +35,23 @@ CREATE TABLE "movies" (
 CREATE TABLE "sessions" (
     "id" TEXT NOT NULL,
     "roomNumber" INTEGER NOT NULL,
+    "sits" TEXT[],
     "time" TIMESTAMP(3) NOT NULL,
     "movieId" TEXT NOT NULL,
+    "movieName" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "sessions_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "globalparameters" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "value" TEXT NOT NULL,
+
+    CONSTRAINT "globalparameters_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -90,10 +79,7 @@ CREATE TABLE "reservations" (
 CREATE UNIQUE INDEX "rooms_number_key" ON "rooms"("number");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "sessions_roomNumber_key" ON "sessions"("roomNumber");
-
--- CreateIndex
-CREATE UNIQUE INDEX "sessions_movieId_key" ON "sessions"("movieId");
+CREATE UNIQUE INDEX "globalparameters_name_key" ON "globalparameters"("name");
 
 -- AddForeignKey
 ALTER TABLE "sessions" ADD CONSTRAINT "sessions_roomNumber_fkey" FOREIGN KEY ("roomNumber") REFERENCES "rooms"("number") ON DELETE RESTRICT ON UPDATE CASCADE;
