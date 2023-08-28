@@ -12,7 +12,7 @@ datasource db {
 
 model User {
   id        String    @id @default(uuid())
-  user      String
+  user      String    @unique
   password  String
   createdAt DateTime?
 
@@ -39,6 +39,7 @@ model Movie {
   updatedAt         DateTime  @default(now())
   Session           Session[]
 
+  @@unique([id, name])
   @@map("movies")
 }
 
@@ -48,7 +49,7 @@ model Session {
   roomNumber Int
   sits       String[]
   time       DateTime
-  movie      Movie    @relation(fields: [movieId], references: [id])
+  movie      Movie    @relation(fields: [movieId, movieName], references: [id, name])
   movieId    String
   movieName  String
   createdAt  DateTime @default(now())
