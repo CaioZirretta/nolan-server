@@ -2,9 +2,11 @@ import { MovieRepository } from "../infra/movie/MovieRepository";
 import { MovieService } from "../domain/movie/MovieService";
 import { Request, Response } from "express";
 import { CreateMovieSchema, DeleteMovieSchema, FindMovieSchema, UpdateMovieSchema } from "../domain/movie/MovieSchema";
+import { SessionRepository } from "../infra/session/SessionRepository";
 
-const repository: MovieRepository = new MovieRepository();
-const service: MovieService = new MovieService(repository);
+const movieRepository: MovieRepository = new MovieRepository();
+const sessionRepository: SessionRepository = new SessionRepository();
+const service: MovieService = new MovieService(movieRepository, sessionRepository);
 
 export class MovieResource {
     static async search(req: Request, res: Response): Promise<Response> {

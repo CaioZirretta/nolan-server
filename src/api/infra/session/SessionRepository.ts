@@ -3,7 +3,12 @@ import { Movie, Room, Session } from "@prisma/client";
 import { prisma } from "../../../prisma";
 import { NolanError } from "../../error/NolanError";
 import { ErrorMessage } from "../../error/ErrorMessage";
-import { CreateSessionType, NewReservationType, UpdateSessionType } from "../../domain/session/SessionSchema";
+import {
+    CreateSessionType,
+    NewReservationType,
+    UpdateSessionMovieNameType,
+    UpdateSessionType
+} from "../../domain/session/SessionSchema";
 import { RoomRepository } from "../room/RoomRepository";
 import { MovieRepository } from "../movie/MovieRepository";
 
@@ -12,13 +17,13 @@ const movieRepository = new MovieRepository();
 
 export class SessionRepository implements BaseCrudRepository<Session> {
     async list(): Promise<Session[]> {
-        const result: Session[] = await prisma.session.findMany({ orderBy:{ time: 'asc'} });
+        const result: Session[] = await prisma.session.findMany({ orderBy: { time: 'asc' } });
 
         return result;
     }
 
     async searchById(id: string): Promise<Session> {
-        const result: Session | null = await prisma.session.findUnique({  where: { id } });
+        const result: Session | null = await prisma.session.findUnique({ where: { id } });
 
         if (!result) {
             throw new NolanError(ErrorMessage.SESSION_NOT_FOUND);
@@ -28,7 +33,7 @@ export class SessionRepository implements BaseCrudRepository<Session> {
     }
 
     async searchByRoom(roomNumber: number): Promise<Session[]> {
-        const result: Session[] = await prisma.session.findMany({ where: { roomNumber }, orderBy: { time: 'asc'} });
+        const result: Session[] = await prisma.session.findMany({ where: { roomNumber }, orderBy: { time: 'asc' } });
 
         if (!result) {
             throw new NolanError(ErrorMessage.SESSION_BY_ROOM_NOT_FOUND);
@@ -43,7 +48,7 @@ export class SessionRepository implements BaseCrudRepository<Session> {
 
     async searchByMovieName(movieName: string): Promise<Session[]> {
         console.log(movieName);
-        return prisma.session.findMany({ where: { movieName }, orderBy: { time: 'asc'} });
+        return prisma.session.findMany({ where: { movieName }, orderBy: { time: 'asc' } });
     }
 
     async create({ roomNumber, sits, time, movieId, movieName }: CreateSessionType): Promise<Session> {
@@ -80,15 +85,15 @@ export class SessionRepository implements BaseCrudRepository<Session> {
         });
     }
 
-    async newReservation({sessionId, sits}: NewReservationType ): Promise<any> {
+    async newReservation({ sessionId, sits }: NewReservationType): Promise<any> {
         const session = await this.searchById(sessionId);
 
-        sits.forEach(sit => session.sits.push(sit));
+        session.sits = [...session.sits, ...sits]
 
         return prisma.session.update({
             where: { id: sessionId },
-            data:{ sits: session.sits }
-        })
+            data: { sits: session.sits }
+        });
     }
 
     async update({ id, roomNumber, sits, time, movieId, movieName }: UpdateSessionType): Promise<Session> {
@@ -109,6 +114,17 @@ export class SessionRepository implements BaseCrudRepository<Session> {
         }
 
         return result;
+    }
+
+    async updateMovieName({ movieId, movieName }: UpdateSessionMovieNameType): Promise<void> {
+        await prisma.session.updateMany({
+            where:{
+                movieId
+            },
+            data: {
+                movieName
+            }
+        })
     }
 
     async delete(id: string): Promise<Session> {

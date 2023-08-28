@@ -49,3 +49,5 @@ export type UpdateSessionType = z.infer<typeof UpdateSessionSchema>;
 export const DeleteSessionSchema = z.object({ id: z.string() });
 
 export type DeleteSessionType = z.infer<typeof DeleteSessionSchema>;
+
+export type UpdateSessionMovieNameType = { movieId: string, movieName: string };

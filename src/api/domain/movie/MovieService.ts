@@ -1,10 +1,11 @@
 import { MovieRepository } from "../../infra/movie/MovieRepository";
 import { Request, Response } from "express";
 import { Movie } from "@prisma/client";
-import { CreateMovieType, MovieIdName, UpdateMovieType } from "./MovieSchema";
+import { MovieIdName } from "./MovieSchema";
+import { SessionRepository } from "../../infra/session/SessionRepository";
 
 export class MovieService {
-    constructor(private repository: MovieRepository) {
+    constructor(private repository: MovieRepository, private sessionRepository: SessionRepository) {
     }
 
     async list(req: Request, res: Response): Promise<Response> {
@@ -63,6 +64,7 @@ export class MovieService {
                 synopsis_expanded,
                 banner,
             });
+            await this.sessionRepository.updateMovieName({ movieId: id, movieName: name });
         } catch (error: any) {
             return res.status(400).send({ error });
         }
@@ -73,7 +75,7 @@ export class MovieService {
     async delete(req: Request, res: Response): Promise<Response> {
         let result: Movie;
 
-        const { id } = req.query
+        const { id } = req.query;
 
         try {
             result = await this.repository.delete(id as string);

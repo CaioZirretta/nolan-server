@@ -24,6 +24,7 @@ model Room {
   number    Int       @unique
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now())
+  createdBy String?
   Session   Session[]
 
   @@map("rooms")
@@ -37,6 +38,7 @@ model Movie {
   banner            String
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @default(now())
+  createdBy         String?
   Session           Session[]
 
   @@unique([id, name])
@@ -54,6 +56,7 @@ model Session {
   movieName  String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @default(now())
+  createdBy  String?
 
   @@map("sessions")
 }
