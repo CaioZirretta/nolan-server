@@ -12,7 +12,15 @@ const repository: SessionRepository = new SessionRepository();
 const service: SessionService = new SessionService(repository);
 
 export class SessionResource {
-    static async list(req: Request, res: Response) {
+    static async search(req: Request, res: Response): Promise<Response>{
+        if(req.query.id){
+            return SessionResource.searchById(req, res);
+        }
+
+        return SessionResource.list(req, res);
+    }
+
+    static async list(req: Request, res: Response): Promise<Response> {
         if(req.query.id) {
             return SessionResource.searchById(req, res);
         }
@@ -20,7 +28,7 @@ export class SessionResource {
         return service.list(req, res);
     }
 
-    static async searchById(req: Request, res: Response) {
+    static async searchById(req: Request, res: Response): Promise<Response> {
         try {
             FindSessionSchema.parse({ id: req.query.id });
         } catch (error) {

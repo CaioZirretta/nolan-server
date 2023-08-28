@@ -6,11 +6,10 @@ export const roomRoutes = Router();
 
 const baseUrl = "/room";
 
-roomRoutes.get(baseUrl, authenticationFilter, RoomResource.list);
+roomRoutes.get(baseUrl, authenticationFilter, RoomResource.search);
 roomRoutes.get(baseUrl + "/sessions", authenticationFilter, RoomResource.listWithSessions);
 roomRoutes.get(baseUrl + "/sessions/:number", authenticationFilter, RoomResource.listWithSessionsByRoomNumber);
-roomRoutes.get(baseUrl + "/:id", authenticationFilter, RoomResource.searchById);
 
 roomRoutes.post(baseUrl, authenticationFilter, RoomResource.create);
 roomRoutes.put(baseUrl, authenticationFilter, RoomResource.update);
-roomRoutes.delete(baseUrl + "/:id", authenticationFilter, RoomResource.delete);
+roomRoutes.delete(baseUrl, authenticationFilter, RoomResource.delete);

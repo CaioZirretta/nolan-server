@@ -7,6 +7,14 @@ const repository: MovieRepository = new MovieRepository();
 const service: MovieService = new MovieService(repository);
 
 export class MovieResource {
+    static async search(req: Request, res: Response): Promise<Response> {
+        if (req.query.id) {
+            return MovieResource.searchById(req, res);
+        }
+
+        return MovieResource.list(req, res);
+    }
+
     static async list(req: Request, res: Response): Promise<Response> {
         return service.list(req, res);
     }
@@ -16,8 +24,10 @@ export class MovieResource {
     }
 
     static async searchById(req: Request, res: Response): Promise<Response> {
+
+
         try {
-            FindMovieSchema.parse({ id: req.params.id });
+            FindMovieSchema.parse({ id: req.query.id });
         } catch (error) {
             return res.status(400).send({ message: error });
         }

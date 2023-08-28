@@ -7,7 +7,11 @@ import { CreateMovieSchema, DeleteMovieSchema, FindMovieSchema, UpdateMovieSchem
 // const service: MovieService = new MovieService(repository);
 
 export class GlobalParameterResource {
-    static async list(req: Request, res: Response) {
-        return undefined;
+    static async search(request: Request, response: Response): Promise<Response>{
+        return new Promise<Response>(()=>{});
+    }
+
+    static async list(req: Request, res: Response): Promise<Response> {
+        return new Promise<Response>(()=>{});
     }
 }

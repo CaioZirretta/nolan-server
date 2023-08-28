@@ -1,7 +1,7 @@
 import { MovieRepository } from "../../infra/movie/MovieRepository";
 import { Request, Response } from "express";
 import { Movie } from "@prisma/client";
-import { MovieIdName } from "./MovieSchema";
+import { CreateMovieType, MovieIdName, UpdateMovieType } from "./MovieSchema";
 
 export class MovieService {
     constructor(private repository: MovieRepository) {
@@ -23,7 +23,7 @@ export class MovieService {
         let result: Movie;
 
         try {
-            result = await this.repository.searchById(req.params.id);
+            result = await this.repository.searchById(req.query.id as string);
         } catch (error: any) {
             return res.status(400).send({ error });
         }
