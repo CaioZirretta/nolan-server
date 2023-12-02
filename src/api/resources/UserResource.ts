@@ -1,12 +1,11 @@
 import { Request, Response } from "express";
-import { LoginRequest, LoginRequestSchema, LoginResponse } from "../domain/user/LoginSchema";
+import { LoginRequestSchema } from "../domain/user/LoginSchema";
 import { UserService } from "../domain/user/UserService";
 import { UserRepository } from "../infra/user/UserRepository";
-import { TypedRequest } from "../domain/TypedRequest";
 import { CreateUserSchema } from "../domain/user/UserSchema";
 
-const repository = new UserRepository();
-const service = new UserService(repository);
+const repository: UserRepository = new UserRepository();
+const service: UserService = new UserService(repository);
 
 export class UserResource {
     static async login(req: Request, res: Response): Promise<Response> {

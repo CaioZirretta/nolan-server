@@ -5,7 +5,7 @@ import { User } from "@prisma/client";
 import bcrypt from 'bcrypt';
 import { createToken } from "../JwtToken";
 import { CreateUserType } from "../../domain/user/UserSchema";
-import { ErrorMessage } from "../../error/ErrorMessage";
+import { Message } from "../../error/Message";
 
 
 export class UserRepository {
@@ -18,18 +18,18 @@ export class UserRepository {
             const passwordMatch: boolean = await bcrypt.compare(loginInfo.password, result.password);
 
             if (!passwordMatch) {
-                throw new NolanError(ErrorMessage.PASSWORD_INCORRECT);
+                throw new NolanError(Message.PASSWORD_INCORRECT);
             }
 
             const token: string = createToken({
-                iss: "nolan",
-                sub: result.id
+                id: result.id,
+                accessLevel: result.accessLevel,
             });
 
             return { token };
 
         } catch (error: any) {
-            throw error;
+            throw new NolanError(Message.UNKNOWN_ERROR);
         }
     }
 
@@ -40,7 +40,7 @@ export class UserRepository {
             }
         });
 
-        if (!result) throw new NolanError(ErrorMessage.USER_NOT_FOUND);
+        if (!result) throw new NolanError(Message.USER_NOT_FOUND);
 
         return result;
     }
@@ -52,18 +52,18 @@ export class UserRepository {
             }
         });
 
-        if (result) throw new NolanError(ErrorMessage.USER_ALREADY_REGISTERED);
+        if (result) throw new NolanError(Message.USER_ALREADY_REGISTERED);
 
         const saltRounds: number = 10;
-        const salt = await bcrypt.genSalt(saltRounds);
-        const hashPassword = await bcrypt.hash(user.password, salt);
-
+        const salt: string = await bcrypt.genSalt(saltRounds);
+        const hashPassword: string = await bcrypt.hash(user.password, salt);
 
         await prisma.user.create({
             data: {
                 user: user.username,
                 password: hashPassword,
-                createdAt: user.createdAt,
+                accessLevel: user.accessLevel,
+                createdAt: user.createdAt ?? new Date().toISOString(),
             }
         });
     }

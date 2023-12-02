@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "dev": "ts-node-dev ./src/server.ts",
-    "studio": "npx prisma studio"
+    "studio": "npx prisma studio",
+    "migrate": "npx prisma migrate dev"
   },
   "keywords": [],
   "author": "",

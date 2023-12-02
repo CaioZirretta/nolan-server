@@ -1,4 +1,6 @@
-export enum ErrorMessage {
+export enum Message {
+    UNKNOWN_ERROR = "Unknown error",
+
     MOVIES_NOT_FOUND = "No movies were found",
     MOVIE_NOT_FOUND = "Movie not found",
     ROOMS_NOT_FOUND = "No rooms were found",
@@ -23,5 +25,7 @@ export enum ErrorMessage {
     MOVIE_WRONG_NAME = "Movie name does not match",
     GLOBALPARAMETER_NOT_FOUND = "Global parameter not found",
     GLOBALPARAMETER_ALREADY_EXISTS= "Global parameter already exists",
-    ORIGEM_NAO_PERMITIDA="Origem de acesso não permitida"
+    ORIGIN_NOT_ALLOWED="Access origin not allowed",
+
+    OPERATION_SUCCEEDED="Operation succeeded"
 }

@@ -1,7 +1,7 @@
 import { prisma } from "../../../prisma";
 import { Movie } from "@prisma/client";
 import { NolanError } from "../../error/NolanError";
-import { ErrorMessage } from "../../error/ErrorMessage";
+import { Message } from "../../error/Message";
 import { CreateMovieType, MovieIdName, UpdateMovieType } from "../../domain/movie/MovieSchema";
 import { BaseCrudRepository } from "../BaseCrudRepository";
 
@@ -28,7 +28,7 @@ export class MovieRepository implements BaseCrudRepository<Movie> {
         const result: Movie | null = await prisma.movie.findUnique({ where: { id } });
 
         if (!result) {
-            throw new NolanError(ErrorMessage.MOVIE_NOT_FOUND);
+            throw new NolanError(Message.MOVIE_NOT_FOUND);
         }
 
         return result;
@@ -67,7 +67,7 @@ export class MovieRepository implements BaseCrudRepository<Movie> {
         });
 
         if (!result) {
-            throw new NolanError(ErrorMessage.MOVIE_NOT_FOUND);
+            throw new NolanError(Message.MOVIE_NOT_FOUND);
         }
 
         return result;
@@ -77,7 +77,7 @@ export class MovieRepository implements BaseCrudRepository<Movie> {
         const result: Movie = await prisma.movie.delete({ where: { id } });
 
         if (!result) {
-            throw new NolanError(ErrorMessage.MOVIE_NOT_FOUND);
+            throw new NolanError(Message.MOVIE_NOT_FOUND);
         }
 
         return result;
