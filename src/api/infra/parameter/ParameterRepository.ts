@@ -1,7 +1,7 @@
 import { GlobalParameter } from "@prisma/client";
 import { prisma } from "../../../prisma";
 import { NolanError } from "../../error/NolanError";
-import { ErrorMessage } from "../../error/ErrorMessage";
+import { Message } from "../../error/Message";
 import { GlobalParameterType } from "../../domain/parameter/GlobalParameterSchema";
 
 export class ParameterRepository {
@@ -14,7 +14,7 @@ export class ParameterRepository {
         const result: GlobalParameter | null = await prisma.globalParameter.findUnique({ where: { name } });
 
         if (!result) {
-            throw new NolanError(ErrorMessage.GLOBALPARAMETER_NOT_FOUND);
+            throw new NolanError(Message.GLOBALPARAMETER_NOT_FOUND);
         }
 
         return result;
@@ -24,7 +24,7 @@ export class ParameterRepository {
         const result: GlobalParameter | null = await prisma.globalParameter.findUnique({ where: { name: parameter.name } });
 
         if (result) {
-            throw new NolanError(ErrorMessage.GLOBALPARAMETER_ALREADY_EXISTS);
+            throw new NolanError(Message.GLOBALPARAMETER_ALREADY_EXISTS);
         }
 
         return prisma.globalParameter.create({ data: parameter });
@@ -34,7 +34,7 @@ export class ParameterRepository {
         const result: GlobalParameter | null = await prisma.globalParameter.findUnique({ where: { name: parameter.name } });
 
         if (!result) {
-            throw new NolanError(ErrorMessage.GLOBALPARAMETER_NOT_FOUND);
+            throw new NolanError(Message.GLOBALPARAMETER_NOT_FOUND);
         }
 
         return prisma.globalParameter.update({ where: { name: parameter.name }, data: parameter });

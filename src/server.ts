@@ -2,7 +2,7 @@ import express, { Express } from "express";
 import { router } from "./api/routes";
 import cors from "cors";
 import { NolanError } from "./api/error/NolanError";
-import { ErrorMessage } from "./api/error/ErrorMessage";
+import { Message } from "./api/error/Message";
 
 const server: Express = express();
 const port = 3333 || process.env.PORT;
@@ -12,7 +12,7 @@ const corsOptions = {
         if (!origin || origin.includes('localhost')) {
             callback(null, true);
         } else {
-            callback(new NolanError(ErrorMessage.ORIGEM_NAO_PERMITIDA));
+            callback(new NolanError(Message.ORIGIN_NOT_ALLOWED));
         }
     },
     optionsSuccessStatus: 200

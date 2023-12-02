@@ -2,7 +2,7 @@ import { Room } from "@prisma/client";
 import { BaseCrudRepository } from "../BaseCrudRepository";
 import { prisma } from "../../../prisma";
 import { NolanError } from "../../error/NolanError";
-import { ErrorMessage } from "../../error/ErrorMessage";
+import { Message } from "../../error/Message";
 import { UpdateRoomType } from "../../domain/room/RoomSchema";
 
 export class RoomRepository implements BaseCrudRepository<Room> {
@@ -16,7 +16,7 @@ export class RoomRepository implements BaseCrudRepository<Room> {
         const result: Room | null = await prisma.room.findUnique({ where: { id } });
 
         if (!result) {
-            throw new NolanError(ErrorMessage.ROOM_NOT_FOUND);
+            throw new NolanError(Message.ROOM_NOT_FOUND);
         }
 
         return result;
@@ -26,7 +26,7 @@ export class RoomRepository implements BaseCrudRepository<Room> {
         const result: Room | null = await prisma.room.findUnique({ where: { number } });
 
         if (!result) {
-            throw new NolanError(ErrorMessage.ROOM_NOT_FOUND);
+            throw new NolanError(Message.ROOM_NOT_FOUND);
         }
 
         return result;
@@ -36,7 +36,7 @@ export class RoomRepository implements BaseCrudRepository<Room> {
         const result: Room | null = await prisma.room.findUnique({ where: { number } });
 
         if (result) {
-            throw new NolanError(ErrorMessage.ROOM_ALREADY_EXISTS);
+            throw new NolanError(Message.ROOM_ALREADY_EXISTS);
         }
 
         return prisma.room.create({
@@ -56,7 +56,7 @@ export class RoomRepository implements BaseCrudRepository<Room> {
         });
 
         if (!result) {
-            throw new NolanError(ErrorMessage.ROOM_NOT_FOUND);
+            throw new NolanError(Message.ROOM_NOT_FOUND);
         }
 
         return result;
@@ -66,7 +66,7 @@ export class RoomRepository implements BaseCrudRepository<Room> {
         const result: Room = await prisma.room.delete({ where: { id } });
 
         if (!result) {
-            throw new NolanError(ErrorMessage.ROOM_NOT_FOUND);
+            throw new NolanError(Message.ROOM_NOT_FOUND);
         }
 
         return result;

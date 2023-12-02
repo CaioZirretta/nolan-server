@@ -46,7 +46,8 @@ export class RoomService {
                 number: room.number,
                 createdAt: room.createdAt,
                 updatedAt: room.updatedAt,
-                sessions: sessions.filter(session => session.roomNumber === room.number),
+                createdBy: room.createdBy,
+                sessions: sessions.filter((session: Session) => session.roomNumber === room.number),
             };
         });
 
@@ -70,6 +71,7 @@ export class RoomService {
             number: room.number,
             createdAt: room.createdAt,
             updatedAt: room.updatedAt,
+            createdBy: room.createdBy,
             sessions: sessions
         };
 
