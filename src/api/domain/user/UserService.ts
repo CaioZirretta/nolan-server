@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { LoginRequest, LoginResponse } from "./LoginSchema";
 import { UserRepository } from "../../infra/user/UserRepository";
-import { Message } from "../../error/Message";
+import { Message } from "../Message";
 
 export class UserService {
     constructor(private repository: UserRepository) {

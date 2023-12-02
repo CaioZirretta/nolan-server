@@ -5,7 +5,8 @@ import { User } from "@prisma/client";
 import bcrypt from 'bcrypt';
 import { createToken } from "../JwtToken";
 import { CreateUserType } from "../../domain/user/UserSchema";
-import { Message } from "../../error/Message";
+import { ErrorMessage } from "../../error/ErrorMessage";
+import { ErrorCode } from "../../error/ErrorCode";
 
 
 export class UserRepository {
@@ -18,7 +19,7 @@ export class UserRepository {
             const passwordMatch: boolean = await bcrypt.compare(loginInfo.password, result.password);
 
             if (!passwordMatch) {
-                throw new NolanError(Message.PASSWORD_INCORRECT);
+                throw new NolanError(ErrorMessage.PASSWORD_INCORRECT, ErrorCode.PASSWORD_INCORRECT_CODE);
             }
 
             const token: string = createToken({
@@ -32,7 +33,7 @@ export class UserRepository {
             if (error instanceof NolanError) {
                 throw error;
             } else {
-                throw new NolanError(Message.UNKNOWN_ERROR);
+                throw new NolanError(ErrorMessage.UNKNOWN_ERROR);
             }
         }
     }
@@ -44,7 +45,7 @@ export class UserRepository {
             }
         });
 
-        if (!result) throw new NolanError(Message.USER_NOT_FOUND);
+        if (!result) throw new NolanError(ErrorMessage.USER_NOT_FOUND, ErrorCode.USER_NOT_FOUND_CODE);
 
         return result;
     }
@@ -56,7 +57,7 @@ export class UserRepository {
             }
         });
 
-        if (result) throw new NolanError(Message.USER_ALREADY_REGISTERED);
+        if (result) throw new NolanError(ErrorMessage.USER_ALREADY_REGISTERED, ErrorCode.USER_ALREADY_REGISTERED_CODE);
 
         const saltRounds: number = 10;
         const salt: string = await bcrypt.genSalt(saltRounds);

@@ -2,8 +2,9 @@ import { Room } from "@prisma/client";
 import { BaseCrudRepository } from "../BaseCrudRepository";
 import { prisma } from "../../../prisma";
 import { NolanError } from "../../error/NolanError";
-import { Message } from "../../error/Message";
+import { ErrorMessage } from "../../error/ErrorMessage";
 import { UpdateRoomType } from "../../domain/room/RoomSchema";
+import { ErrorCode } from "../../error/ErrorCode";
 
 export class RoomRepository implements BaseCrudRepository<Room> {
     async list(): Promise<Room[]> {
@@ -16,7 +17,7 @@ export class RoomRepository implements BaseCrudRepository<Room> {
         const result: Room | null = await prisma.room.findUnique({ where: { id } });
 
         if (!result) {
-            throw new NolanError(Message.ROOM_NOT_FOUND);
+            throw new NolanError(ErrorMessage.ROOM_NOT_FOUND, ErrorCode.ROOM_NOT_FOUND_CODE);
         }
 
         return result;
@@ -26,7 +27,7 @@ export class RoomRepository implements BaseCrudRepository<Room> {
         const result: Room | null = await prisma.room.findUnique({ where: { number } });
 
         if (!result) {
-            throw new NolanError(Message.ROOM_NOT_FOUND);
+            throw new NolanError(ErrorMessage.ROOM_NOT_FOUND, ErrorCode.ROOM_NOT_FOUND_CODE);
         }
 
         return result;
@@ -36,7 +37,7 @@ export class RoomRepository implements BaseCrudRepository<Room> {
         const result: Room | null = await prisma.room.findUnique({ where: { number } });
 
         if (result) {
-            throw new NolanError(Message.ROOM_ALREADY_EXISTS);
+            throw new NolanError(ErrorMessage.ROOM_ALREADY_EXISTS, ErrorCode.ROOM_ALREADY_EXISTS_CODE);
         }
 
         return prisma.room.create({
@@ -56,7 +57,7 @@ export class RoomRepository implements BaseCrudRepository<Room> {
         });
 
         if (!result) {
-            throw new NolanError(Message.ROOM_NOT_FOUND);
+            throw new NolanError(ErrorMessage.ROOM_NOT_FOUND, ErrorCode.ROOM_NOT_FOUND_CODE);
         }
 
         return result;
@@ -66,7 +67,7 @@ export class RoomRepository implements BaseCrudRepository<Room> {
         const result: Room = await prisma.room.delete({ where: { id } });
 
         if (!result) {
-            throw new NolanError(Message.ROOM_NOT_FOUND);
+            throw new NolanError(ErrorMessage.ROOM_NOT_FOUND, ErrorCode.ROOM_NOT_FOUND_CODE);
         }
 
         return result;

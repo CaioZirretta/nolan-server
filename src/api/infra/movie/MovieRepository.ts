@@ -1,9 +1,10 @@
 import { prisma } from "../../../prisma";
 import { Movie } from "@prisma/client";
 import { NolanError } from "../../error/NolanError";
-import { Message } from "../../error/Message";
+import { ErrorMessage } from "../../error/ErrorMessage";
 import { CreateMovieType, MovieIdName, UpdateMovieType } from "../../domain/movie/MovieSchema";
 import { BaseCrudRepository } from "../BaseCrudRepository";
+import { ErrorCode } from "../../error/ErrorCode";
 
 export class MovieRepository implements BaseCrudRepository<Movie> {
     async list(): Promise<Movie[]> {
@@ -28,7 +29,7 @@ export class MovieRepository implements BaseCrudRepository<Movie> {
         const result: Movie | null = await prisma.movie.findUnique({ where: { id } });
 
         if (!result) {
-            throw new NolanError(Message.MOVIE_NOT_FOUND);
+            throw new NolanError(ErrorMessage.MOVIE_NOT_FOUND, ErrorCode.MOVIE_NOT_FOUND_CODE);
         }
 
         return result;
@@ -67,7 +68,7 @@ export class MovieRepository implements BaseCrudRepository<Movie> {
         });
 
         if (!result) {
-            throw new NolanError(Message.MOVIE_NOT_FOUND);
+            throw new NolanError(ErrorMessage.MOVIE_NOT_FOUND, ErrorCode.MOVIE_NOT_FOUND_CODE);
         }
 
         return result;
@@ -77,7 +78,7 @@ export class MovieRepository implements BaseCrudRepository<Movie> {
         const result: Movie = await prisma.movie.delete({ where: { id } });
 
         if (!result) {
-            throw new NolanError(Message.MOVIE_NOT_FOUND);
+            throw new NolanError(ErrorMessage.MOVIE_NOT_FOUND, ErrorCode.MOVIE_NOT_FOUND_CODE);
         }
 
         return result;

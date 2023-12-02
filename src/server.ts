@@ -2,7 +2,8 @@ import express, { Express } from "express";
 import { router } from "./api/routes";
 import cors from "cors";
 import { NolanError } from "./api/error/NolanError";
-import { Message } from "./api/error/Message";
+import { ErrorMessage } from "./api/error/ErrorMessage";
+import { ErrorCode } from "./api/error/ErrorCode";
 
 const server: Express = express();
 const port = 3333 || process.env.PORT;
@@ -12,7 +13,7 @@ const corsOptions = {
         if (!origin || origin.includes('localhost')) {
             callback(null, true);
         } else {
-            callback(new NolanError(Message.ORIGIN_NOT_ALLOWED));
+            callback(new NolanError(ErrorMessage.ORIGIN_NOT_ALLOWED, ErrorCode.ORIGIN_NOT_ALLOWED_CODE));
         }
     },
     optionsSuccessStatus: 200
