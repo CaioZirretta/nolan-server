@@ -8,29 +8,45 @@ import { ErrorCode } from "../error/ErrorCode";
 dotenv.config();
 const secretKey: string = process.env.SECRET_KEY!;
 
-export function authenticationFilter(req: Request, res: Response, next: NextFunction): Response | void {
-	const customerOrigin = [process.env.CUSTOMER_ORIGIN]
+export function authenticationFilterLevel0(req: Request, res: Response, next: NextFunction): Response | void {
+    authenticationFilter(req, res, next);
+}
 
-	const origin = req.headers.origin;
+export function authenticationFilterLevel1(req: Request, res: Response, next: NextFunction): Response | void {
+    authenticationFilter(req, res, next, 1);
+}
 
-	if(origin && customerOrigin.includes(origin)) {
-		return next();
-	}
+export function authenticationFilterLevel2(req: Request, res: Response, next: NextFunction): Response | void {
+    authenticationFilter(req, res, next, 2);
+}
 
-	if (!req.headers.authorization) {
-		return res.status(400).send(new NolanError(ErrorMessage.MISSING_AUTH, ErrorCode.MISSING_AUTH_CODE));
-	}
+function authenticationFilter(req: Request, res: Response, next: NextFunction, requiredAccess: number = 0): Response | void {
+    const customerOrigin = [process.env.CUSTOMER_ORIGIN];
 
-	const token: string = req.headers.authorization.split(" ")[1];
+    const origin = req.headers.origin;
 
-	if (!token) {
-		return res.status(401).send(new NolanError(ErrorMessage.NOT_AUTHENTICATED, ErrorCode.NOT_AUTHENTICATED_CODE));
-	}
+    if (origin && customerOrigin.includes(origin)) {
+        return next();
+    }
 
-	jwt.verify(token, secretKey, (err: any) => {
-		if (err) {
-			return res.status(403).send({ message: err });
-		}
-		next();
-	});
+    if (!req.headers.authorization) {
+        return res.status(400).send(new NolanError(ErrorMessage.MISSING_AUTH, ErrorCode.MISSING_AUTH_CODE));
+    }
+
+    const token: string = req.headers.authorization.split(" ")[1];
+
+    if (!token) {
+        return res.status(401).send(new NolanError(ErrorMessage.NOT_AUTHENTICATED, ErrorCode.NOT_AUTHENTICATED_CODE));
+    }
+
+    jwt.verify(token, secretKey, (err: any, decoded: any) => {
+        if (err || !checkPrivileges(decoded.accessLevel, requiredAccess)) {
+            return res.status(403).send({ message: err });
+        }
+        next();
+    });
+}
+
+function checkPrivileges(accessLevel: number, requiredLevel: number = 0): boolean {
+    return accessLevel >= requiredLevel;
 }

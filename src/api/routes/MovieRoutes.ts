@@ -1,13 +1,13 @@
 import { MovieResource } from '../resources/MovieResource';
 import { Router } from "express";
-import { authenticationFilter } from "../infra/AuthenticationFilter";
+import { authenticationFilterLevel0 } from "../infra/AuthenticationFilter";
 
 export const movieRoutes = Router();
 
 const baseUrl = "/movie";
 
-movieRoutes.get(baseUrl, authenticationFilter, MovieResource.search);
-movieRoutes.get(baseUrl + "/idName", authenticationFilter, MovieResource.listIdName);
-movieRoutes.post(baseUrl, authenticationFilter, MovieResource.create);
-movieRoutes.put(baseUrl, authenticationFilter, MovieResource.update);
-movieRoutes.delete(baseUrl + "/:id", authenticationFilter, MovieResource.delete);
+movieRoutes.get(baseUrl, authenticationFilterLevel0, MovieResource.search);
+movieRoutes.get(baseUrl + "/idName", authenticationFilterLevel0, MovieResource.listIdName);
+movieRoutes.post(baseUrl, authenticationFilterLevel0, MovieResource.create);
+movieRoutes.put(baseUrl, authenticationFilterLevel0, MovieResource.update);
+movieRoutes.delete(baseUrl + "/:id", authenticationFilterLevel0, MovieResource.delete);

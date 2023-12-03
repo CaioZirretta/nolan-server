@@ -14,7 +14,7 @@ export class UserService {
         try {
             result = await this.repository.login({ username, password });
         } catch (error: any) {
-            return res.status(404).send({ message: error });
+            return res.status(404).send(error);
         }
 
         return res.status(200).send(result);
@@ -24,11 +24,22 @@ export class UserService {
         const { username, password, accessLevel, createdAt } = req.body;
         try {
             await this.repository.create({ username, password, accessLevel, createdAt });
-        } catch (err: any) {
-            return res.status(400).send({ message: err });
+        } catch (error: any) {
+            return res.status(400).send(error);
         }
 
         return res.status(200).send({ message: Message.OPERATION_SUCCEEDED });
     }
 
+    async alterPrivileges(req: Request, res: Response): Promise<Response> {
+        const { username, accessLevel } = req.body;
+
+        try {
+            await this.repository.alterPrivileges({ username, accessLevel });
+        } catch (error: any) {
+            return res.status(400).send(error);
+        }
+
+        return res.status(200).send({ message: Message.OPERATION_SUCCEEDED });
+    }
 }

@@ -4,7 +4,7 @@ import { NolanError } from "../../error/NolanError";
 import { User } from "@prisma/client";
 import bcrypt from 'bcrypt';
 import { createToken } from "../JwtToken";
-import { CreateUserType } from "../../domain/user/UserSchema";
+import { AlterPrivilegesType, CreateUserType } from "../../domain/user/UserSchema";
 import { ErrorMessage } from "../../error/ErrorMessage";
 import { ErrorCode } from "../../error/ErrorCode";
 
@@ -70,6 +70,13 @@ export class UserRepository {
                 accessLevel: user.accessLevel,
                 createdAt: user.createdAt ?? new Date().toISOString(),
             }
+        });
+    }
+
+    async alterPrivileges(user: AlterPrivilegesType): Promise<void> {
+        await prisma.user.update({
+            where: { user: user.username },
+            data: { accessLevel: user.accessLevel }
         });
     }
 }
